@@ -237,4 +237,6 @@ Este repositorio está organizado en módulos de aprendizaje, cada uno enfocado 
 Agradezco a las plataformas [OpenWebinars](https://openwebinars.net) y [Hack4u](https://hack4u.io) por los contenidos y recursos proporcionados que guían este proceso de aprendizaje. Este repositorio sigue su estructura de módulos y se basa en los conocimientos adquiridos en sus cursos de ciberseguridad y Python. 
 Y en especial, gracias a mi viejo amigo Pepe  por asistirme en esta empresa y por tener más paciencia de la que probablemente merezco
 
+> Nota: Este repositorio documenta apuntes personales basados en cursos de OpenWebinars y Hack4u. Está destinado exclusivamente para fines de aprendizaje personal. No se permite su uso comercial ni su distribución como contenido de curso.
+
 ---
