@@ -12,7 +12,7 @@ Este repositorio está organizado en módulos de aprendizaje, cada uno enfocado 
 
 ## 📚 Tabla de Contenidos
 
-### 1. 🔒 [Especialista en Hacking Ético (OpenWebinars)](Especialista_en_Hacking_Etico/README.md)
+### 1. 🔒 [Especialista en Hacking Ético (OpenWebinars)](Especialista_en_Hacking_Etico/)
 
 #### 1.1 🕵️‍♂️ [Análisis Forense Básico en Sistemas Windows](Especialista_en_Hacking_Etico/Analisis_Forense_Windows_Basico/README.md)
    - Introducción al análisis forense
@@ -85,7 +85,7 @@ Este repositorio está organizado en módulos de aprendizaje, cada uno enfocado 
 
 ---
 
-### 2. 🐍 [Curso de Python: Aprende a Programar en Python 3 (OpenWebinars)](Curso_Python/README.md)
+### 2. 🐍 [Curso de Python: Aprende a Programar en Python 3 (OpenWebinars)](Curso_Python/)
 
 #### 2.1 🚀 [Introducción](Curso_Python/Introduccion/README.md)
    - Presentación del curso
@@ -153,7 +153,7 @@ Este repositorio está organizado en módulos de aprendizaje, cada uno enfocado 
 
 ---
 
-### 3. 💻 [Introducción al Hacking (Hack4u)](Introduccion_Hacking/README.md)
+### 3. 💻 [Introducción al Hacking (Hack4u)](Introduccion_Hacking/)
 
 #### 3.1 📖 [Introducción al Hacking](Introduccion_Hacking/Introduccion/README.md)
    - Conceptos básicos
@@ -197,7 +197,7 @@ Este repositorio está organizado en módulos de aprendizaje, cada uno enfocado 
 
 ---
 
-### 4. 🐍 [Python Ofensivo (Hack4u)](Python_Ofensivo/README.md)
+### 4. 🐍 [Python Ofensivo (Hack4u)](Python_Ofensivo/)
 
 #### 4.1 🧨 [Introducción a Python Ofensivo](Python_Ofensivo/Introduccion/README.md)
    - ¿Qué es Python ofensivo?
