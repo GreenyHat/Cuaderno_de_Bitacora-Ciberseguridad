@@ -32,12 +32,76 @@ La dirección **91.257.12.34** no es válida.
 
 La **máscara de subred** se utiliza para dividir una red en subredes más pequeñas, indicando cuáles bits de la dirección IP corresponden a la **parte de red** y cuáles a la **parte de host**.
 
-La respuesta correcta es:
-
 #### Explicación:
 
 - La máscara de subred define cuántos bits de la dirección IP pertenecen a la **red** (bits de red) y cuántos quedan disponibles para los **hosts**.
 - Por ejemplo, en una máscara como **`255.255.255.0` (notación CIDR: `/24`), los primeros 24 bits se utilizan para identificar la red, y los 8 bits restantes para los hosts.**
+
+#### Pregunta extra
+Características de la notación CIDR /16 
+Máscara de subred: 255.255.0.0 
+Número de direcciones IP disponibles: 65.536 
+Número de subredes posibles: 256 Longitud de la máscara de subred: 16 bits 
+
+Por que 256 redes?
+
+
+La notación **CIDR /16** indica que los primeros 16 bits de la dirección IP están destinados a la parte de red, dejando los otros 16 bits restantes para asignar a los hosts dentro de esa red o para subdividir en subredes.
+
+##### Razón por la que se obtienen **256 subredes**:
+
+1. **Dirección IP total**: Una dirección IPv4 tiene 32 bits. En una red /16, los primeros 16 bits son para la parte de red y los otros 16 bits son para los hosts o subredes.
+    
+2. **Posibilidades de subredes**: Si decides subdividir la parte de host (los 16 bits restantes), puedes usar algunos de esos bits para identificar subredes.
+    
+    - Cada bit adicional que uses para subredes **duplica** la cantidad de subredes disponibles.
+    - Si usas los 8 bits adicionales, tendrás 28=2562^8 = 25628=256 subredes.
+3. **Cada subred tiene una máscara de /24**: Una subred en este esquema tendrá una máscara de **/24 (255.255.255.0)** porque ahora estás usando 24 bits para identificar la red/subred, dejando los últimos 8 bits para los hosts.
+    
+
+##### Resumen:
+
+- Un bloque /16 tiene un espacio total de direcciones IP para 216=65,5362^{16} = 65,536216=65,536 direcciones.
+- Si divides este espacio en subredes de /24, cada subred tendrá 28=2562^8 = 25628=256 direcciones (254 útiles, porque una es para la red y otra para el broadcast).
+- Por eso, puedes tener 65,536÷256=25665,536 \div 256 = 25665,536÷256=256 subredes.
+
+Puede usar cualquier prefijo válido entre **/0** y **/32**, dependiendo del diseño de la red. Los prefijos más comunes son **/8**, **/16**, **/24**, pero también se utilizan otros valores en casos específicos.
+
+##### **Entendiendo los prefijos:**
+
+El prefijo, como **/16** o **/24**, indica cuántos bits en la máscara de subred están configurados en **1** (bits reservados para la red). Por ejemplo:
+
+- **/16**: 255.255.0.0  
+    Esto significa que los primeros 16 bits están configurados como 1. Ofrece un rango más grande de direcciones IP en una subred.
+    
+- **/24**: 255.255.255.0  
+    Significa que los primeros 24 bits están configurados como 1. Ofrece 256 direcciones por subred, de las cuales 254 son utilizables.
+    
+- **/27**: 255.255.255.224  
+    Tiene los primeros 27 bits configurados como 1. Esto ofrece un rango más pequeño, con 32 direcciones, de las cuales 30 son utilizables.
+    
+- **/30**: 255.255.255.252  
+    Esta máscara se usa comúnmente en enlaces punto a punto, con solo 4 direcciones en la subred (2 utilizables).
+    
+
+##### **Cuándo usar cada prefijo:**
+
+1. **/8, /16:**  
+    Se usan para redes grandes, como en los rangos asignados a organizaciones o ISPs. Por ejemplo, un rango de tipo **10.0.0.0/8**.
+    
+2. **/24:**  
+    Es el prefijo más común, ya que ofrece un buen balance entre la cantidad de direcciones IP utilizables (254) y el desperdicio de espacio.
+    
+3. **/30 y mayores (hasta /32):**  
+    Se usan en casos muy específicos, como enlaces punto a punto (que necesitan solo 2 IPs) o para asignar una dirección única a un dispositivo específico en una red.
+    
+4. **/27, /28, /29:**  
+    Se emplean en redes que requieren subredes más pequeñas, como oficinas o departamentos, para optimizar el uso de direcciones.
+    
+
+##### **Conclusión:**
+
+Las máscaras de subred no están limitadas a **/16** o **/24**, y el prefijo que uses depende de las necesidades de tu red: la cantidad de dispositivos que debe soportar cada subred y la optimización del espacio de direcciones IP.
 
 #### Razones por las que las otras opciones son incorrectas:
 
@@ -55,7 +119,7 @@ La respuesta correcta es:
 
 ![[representacion-esquematica-direccion-ipv4.webp]]
 
-La máscara de subred efectivamente te ayuda a determinar cuántos bits están destinados a la red y cuántos quedan disponibles para los hosts. **LOS TRES PRIMEROS OCTETOS SON DE RED Y EL ULTIMO DE HOST**. En otras palabras, l**os primeros tres octetos determinan la subred y los bits de red, mientras que el último octeto se utiliza para identificar individualmente a cada host dentro de esa subred.**
+La máscara de subred te ayuda a determinar cuántos bits están destinados a la red y cuántos quedan disponibles para los hosts. **LOS TRES PRIMEROS OCTETOS SON DE RED Y EL ULTIMO DE HOST (/24)**. En otras palabras, **los primeros tres octetos determinan la subred y los bits de red, mientras que el último octeto se utiliza para identificar individualmente a cada host dentro de esa subred.**
 
 Por ejemplo, si tenemos una dirección IP como 192.168.1.X con una máscara de subred 255.255.255.0, los primeros tres octetos (192.168.1) se refieren a la dirección de red, y el último octeto (X) se refiere a la dirección del host específico
 
@@ -104,8 +168,85 @@ Sí, el conocimiento sobre la máscara de subred y los bits de host puede ser ex
 
 1. **Ataques de exploración (Scanning):**
     
-    - Un atacante que sabe cuántos bits son de red y cuántos son de host puede calcular el rango de direcciones IP disponibles. Esto le permite realizar un **escaneo de red** para identificar dispositivos activos en esa subred.
+    - Un atacante que sabe cuántos bits son de red y cuántos son de host **puede calcular el rango de direcciones IP disponibles**. Esto le permite realizar un **escaneo de red** para identificar dispositivos activos en esa subred.
+	    - Hay herramientas para calcular el rango de direcciones IP disponibles en una máscara de subred? 
+
+
+### **1. Herramientas en Línea**
+
+- **Subnet Calculator (Calculadora de Subredes):** Estas herramientas te permiten introducir una dirección IP y su máscara de subred para calcular el rango disponible. Ejemplos:
+    - Subnet Calculator de IP Calculator
+    - Calculator.net Subnet Calculator
+
+---
+
+#### **2. Comandos de Línea de Comandos**
+
+En sistemas operativos como **Linux**, **macOS**, o **Windows** con herramientas adicionales instaladas, puedes usar:
+
+- **ipcalc** (Linux):
+    
+    
+    `ipcalc <IP>/<PREFIX>`
+    
+    Ejemplo:
+    
+    `ipcalc 192.168.1.0/24` (**CIDR/24**)
+			** el **prefijo `/24`** indica cuántos bits de los 32 totales (en una dirección IPv4) están reservados para identificar la red. En este caso:
+
+- **24 bits** están destinados a la red.
+- Los **8 bits restantes** están destinados a los hosts dentro de esa red.
+    
+    Resultado: Mostrará el rango de IPs, máscara de subred, y la dirección de broadcast.
+    
+- **Sipcalc**: Sipcalc también es una herramienta similar que da más detalles. Instalable en distribuciones como Debian o Ubuntu:
+    
+    bash
+    
+    Copiar código
+    
+    `sudo apt install sipcalc sipcalc <IP>/<PREFIX>`
+    
+
+---
+
+#### **3. Uso de Scripts o Programación**
+
+Puedes escribir un script sencillo en **Python** para calcular el rango de subredes usando el módulo `ipaddress`:
+
+`import ipaddress  # Dirección IP y subred network = ipaddress.ip_network('192.168.1.0/24', strict=False)  # Rango de direcciones IP print(f"Rango de IPs disponibles: {network[1]} - {network[-2]}") print(f"Total de IPs en la subred: {network.num_addresses}")`
+
+Resultado:
+
+`Rango de IPs disponibles: 192.168.1.1 - 192.168.1.254 Total de IPs en la subred: 256`
+
+---
+
+#### **4. Software Dedicado**
+
+- **Advanced IP Scanner**: Escanea redes y muestra rangos de IP.
+- **SolarWinds IP Address Manager**: Administra y calcula subredes en redes más grandes.
+
+---
+
+#### **Cálculo Manual**
+
+Si prefieres hacerlo manualmente:
+
+1. **Convierte la máscara de subred a formato CIDR**. Ejemplo: `/24` equivale a `255.255.255.0`.
+    
+2. **Identifica el bloque de subred**. Para `/24`, el rango es `192.168.1.0` a `192.168.1.255`.
+    
+3. **Excluye las IP reservadas**:
+    
+    - Primera dirección: Dirección de red (`192.168.1.0`).
+    - Última dirección: Broadcast (`192.168.1.255`).
+    
+    IPs utilizables: `192.168.1.1` a `192.168.1.254`.
+
+
     - Herramientas como **Nmap pueden ser usadas para escanear el rango completo de IPs, buscar puertos abiertos y obtener información de los servicios que están corriendo en los dispositivos.**
+    
     
 	
 2. ***Spoofing* de IP:**
@@ -173,13 +314,13 @@ La afirmación **"La resolución estática de nombres tiene mayor prioridad que 
 #### 2. **Resolución dinámica de nombres**
 
 - La resolución dinámica utiliza servicios como DNS para consultar direcciones IP a través de servidores remotos.
-- Si no se encuentra una coincidencia en los métodos de resolución estática, el sistema recurrirá a la resolución dinámica.
+- Si no se encuentra una coincidencia en los métodos de resolución estática, el sistema recurrirá a la resolución dinámica
 
 #### 3. **Configuración estándar** y **VULNERABILIDADES**
 
 - **En sistemas Linux, el archivo `/etc/nsswitch.conf` define el orden de las consultas de resolución de nombres.** Por defecto, se consulta primero el archivo **`/etc/hosts`** (estático) y después el servicio DNS (dinámico).
 
-La configuración del archivo `/etc/nsswitch.conf`, especialmente el orden de resolución de nombres que prioriza `/etc/hosts` sobre el servicio DNS, puede ser explotada si un atacante logra modificar el archivo **`/etc/hosts`** en el sistema. A continuación, se describen posibles vectores de explotación:
+La configuración del archivo `/etc/nsswitch.conf`, especialmente el orden de resolución de nombres que prioriza `/etc/hosts` sobre el servicio DNS, puede ser explotada si un atacante logra modificar el archivo **`/etc/hosts`** en el sistema. A continuación, se describen posibles **vectores de explotación:**
 
 ---
 
@@ -196,7 +337,8 @@ Si un atacante tiene acceso al sistema (por ejemplo, mediante un malware o crede
 
 **Mitigación:**
 
-- Proteger el archivo `/etc/hosts` utilizando permisos restrictivos (`chmod 644 /etc/hosts`) y asegurarse de que solo usuarios con privilegios puedan editarlo.
+- **Proteger el archivo `/etc/hosts` utilizando permisos restrictivos (`chmod 644 /etc/hosts`) y asegurarse de que solo usuarios con privilegios puedan editarlo.**
+
 - Monitorear cambios en el archivo mediante herramientas de detección de intrusos como **Tripwire** o **OSSEC**.
 
 ---
@@ -207,9 +349,6 @@ En sistemas multiusuario, si los permisos del archivo `/etc/hosts` son mal confi
 
 Ejemplo:
 
-plaintext
-
-Copiar código
 
 `127.0.0.1 malicious.site`
 
@@ -229,7 +368,7 @@ Ejemplo: Un script que realiza backups hacia `backup-server.local` podría ser r
 
 **Mitigación:**
 
-- Validar direcciones IP en aplicaciones críticas en lugar de confiar únicamente en nombres de dominio.
+- **Validar direcciones IP en aplicaciones críticas en lugar de confiar únicamente en nombres de dominio**.
 - Implementar verificaciones de integridad en los scripts.
 
 ---
@@ -239,10 +378,6 @@ Ejemplo: Un script que realiza backups hacia `backup-server.local` podría ser r
 Un atacante podría modificar el archivo `/etc/hosts` como método de persistencia en un sistema comprometido, redirigiendo herramientas de actualización de software o control a sus propios servidores.
 
 Ejemplo:
-
-plaintext
-
-Copiar código
 
 `security-updates.server.com 203.0.113.1`
 
@@ -306,11 +441,11 @@ La afirmación correcta es:
 
 # Itinerario de encapsulación de paquete
 
-Según los conceptos de red y enrutamiento, al enviar un paquete de datos a Internet, éste va saltando de router en router, desencapsulándose en cada paso y volviéndose a encapsular y enviar al próximo salto. Este desencapsulamiento se realiza hasta el nivel de la capa 2 (Ethernet) o capa 3 (IP).
+Según los conceptos de red y enrutamiento, al enviar un paquete de datos a Internet, éste va saltando de router en router, desencapsulándose en cada paso y volviéndose a encapsular y enviar al próximo salto. **Este desencapsulamiento se realiza hasta el nivel de la capa 2 (Ethernet) o capa 3 (IP).**
 
 En cada paso, el router:
 
-1. Desencapsula el paquete de datos de la capa superior (por ejemplo, TCP/IP o otros protocolos de aplicación).
+1. Desencapsula el paquete de datos de la capa superior (por ejemplo, TCP/IP u otros protocolos de aplicación).
 2. Analiza el encabezado del paquete para determinar la dirección de destino y la ruta más adecuada para llegar a ella.
 3. Encapsula el paquete de datos en una trama Ethernet (capa 2) con la dirección MAC del siguiente salto (router o host).
 4. Envía el paquete encapsulado a la próxima etapa en la ruta.
@@ -493,13 +628,26 @@ Entre los protocolos de nivel de transporte, TCP se destaca por ser un protocol
 
 En resumen, TCP es un protocolo de nivel de transporte que se encarga de establecer y mantener conexiones entre aplicaciones y garantizar la entrega segura y ordenada de datos en una red.
 
-# Estructura de una dirección IPv4
+# Estructura de una dirección IPv4 vs IPv6
 
-Una dirección IPv4 está formada por 32 bits, no 128 bits. Las direcciones IPv4 se dividen en cuatro octetos (32 bits) separados por puntos, cada uno representando un valor decimal entre 0 y 255.
+Una dirección IPv4 está formada por 32 bits, no 128 bits (como las IPv6). Las direcciones IPv4 se dividen en cuatro octetos (32 bits) separados por puntos, cada uno representando un valor decimal entre 0 y 255.
 
-En contraste, las direcciones IPv6 están formadas por 128 bits, divididas en ocho grupos de cuatro dígitos hexadecimales (16 bits cada grupo) separados por dos puntos.
+En contraste, las direcciones IPv6 están formadas por 128 bits, d**ivididas en ocho grupos de cuatro dígitos hexadecimales (16 bits cada grupo)** separados por dos puntos.
 
 La información proporcionada en los resultados de búsqueda indica que IPv6 utiliza 128 bits, mientras que IPv4 utiliza 32 bits.
+
+### **Representación Binaria**
+
+- En IPv4, una dirección tiene **32 bits** (4 octetos de 8 bits cada uno).
+- En IPv6, una dirección tiene **128 bits** (16 octetos de 8 bits cada uno).
+
+- **16 octetos**: Se refiere al número total de grupos de **8 bits** en la dirección IPv6.
+- **8 grupos de 4 dígitos hexadecimales**: Se refiere a la representación en formato hexadecimal, donde cada grupo equivale a **16 bits**.
+
+Ambas son maneras válidas de describir una dirección IPv6, pero destacan diferentes aspectos:
+
+- **16 octetos** enfatiza el número de bloques de 8 bits.
+- **8 grupos de 4 dígitos hexadecimales** enfatiza cómo se presenta en formato legible.
 
 # CGNAT: Mecanismo y Funcionamiento
 
@@ -613,3 +761,4 @@ Para mejorar la robustez de aplicaciones que utilizan UDP para manejar pérdida 
 10. **Pruebas exhaustivas**: La aplicación debe ser sometida a pruebas exhaustivas para garantizar que funcione correctamente en condiciones de pérdida y corrupción de paquetes.
 
 Es importante destacar que, aunque estas estrategias pueden mejorar la robustez de aplicaciones que utilizan UDP, no pueden garantizar la entrega segura y confiable de paquetes en todas las circunstancias. La aplicación debe ser diseñada y probada para funcionar correctamente en condiciones de red variables y con un nivel razonable de pérdida y corrupción de paquetes.
+
