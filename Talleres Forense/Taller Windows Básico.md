@@ -16,9 +16,12 @@ Disk investigator: Para leer en RAW la informacion extraida con Dumpit
 
 Los siguientes comandos son variantes usadas en el tallerdel comando dir de Windows, que se utiliza para listar el contenido de directorios. A continuación, desglosaré cada uno, explicando su funcionalidad, parámetros, y uso habitual:
 
-### Comando: dir cookie.*.* /s /p
+### Comando `dir cookie.*.* /s /p` y ``
 
 **Desglose**:
+
+En el taller ejecuta el comando `dir cookie*.* /s/p` en el directorio raíz
+
 `dir`: Es el comando principal utilizado para listar los archivos y directorios en una ubicación específica.
 `cookie.*.*`: Especifica un patrón de búsqueda. En este caso:
 `cookie`: Busca archivos cuyo nombre comience con "cookie".
@@ -32,6 +35,31 @@ Busca todos los archivos en el directorio actual y sus subdirectorios que cumpla
 **Usabilidad habitual**:
 Este comando se usa para localizar archivos específicos relacionados con cookies en un sistema de archivos, útil en tareas de auditoría o limpieza.
 Puede ser útil para desarrolladores, administradores de sistemas o personas que investigan rastros de actividad web en el sistema.
+
+**Notas adicionales para cada caso de uso**
+
+**Comando 1:** `dir cookie*.* /s/p`
+`cookie*.*`: Busca archivos o carpetas cuyo nombre:
+
+- Comience con cookie. 
+- Puede tener cualquier cadena de caracteres después de cookie debido al comodín *.
+- Puede tener cualquier extensión (.*).
+
+Ejemplo de coincidencias:
+- cookie.txt
+- cookies.log
+- cookieMonster.jpg
+- cookieTracker.dat
+
+**Comando 2:** `dir cookie.*.* /s/p`
+- `cookie.*.*`: Busca archivos o carpetas cuyo nombre:
+  - Sea exactamente cookie.
+  - Tengan al menos dos extensiones separadas por un punto, porque el primer . es fijo y el segundo .* actúa como comodín.
+  
+**Ejemplo de coincidencias:**
+`cookie.log.txt //
+cookie.tmp.bak //
+cookie.1.2`
 
 ### Comando: dir index.dat /s /p /a
 
@@ -47,4 +75,4 @@ Busca todos los archivos llamados index.dat en el directorio actual y sus subdir
 **Usabilidad habitual**:
 Este comando suele emplearse en tareas de análisis forense, limpieza de datos antiguos, o resolución de problemas relacionados con el historial de navegación de Internet Explorer.
 También es útil para identificar archivos que el sistema podría estar ocultando al usuario normal.
-**MINUTO 14:00**
+
