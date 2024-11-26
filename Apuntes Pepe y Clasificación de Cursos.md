@@ -9,11 +9,11 @@
 4. **Análisis forense avanzado en sistemas Linux**
 5. **Adquisición y análisis forense de tráfico de red**
 6. **Análisis forense en entornos Windows: Estructuras de sistema de ficheros**
-7. **Análisis forense en entornos Windows: Registro y log de eventos**
+7. **Análisis forense en entornos Windows: Registro y log de eventos** 
 8. **Evidencias forenses: Imagen de disco, de memoria volátil y artefactos**
 9. **Curso de Triage informático**
 10. **Curso de análisis de malware**
-11. **Autopsy: Recuperación de datos**
+11. **Autopsy: Recuperación de datos** 
 12. **Virtual Lab con VirtualBox**
 
 **Sugerencias:**

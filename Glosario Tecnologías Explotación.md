@@ -16,8 +16,8 @@ Jenkins es una popular herramienta de integración continua que, si no está con
 
 #### **Explotación:**
 
-1. Acceso a la consola Groovy (`http://<jenkins-url>/script` o `/scriptConsole`).
-2. Ejecución de comandos maliciosos, como:
+1. Acceso a la consola Groovy (`http://<jenkins-url>/script` o `/scriptConsole`)
+2. Ejecución de comandos maliciosos, como: 
     
     groovy
     
