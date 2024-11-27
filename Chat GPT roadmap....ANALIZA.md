@@ -2,9 +2,9 @@ Respondeme a estas preguntas para trazar un plan para afrontar el aprendizaje de
 
 ###### ChatGPT Plus
 
-ChatGPT
 
-Memoria actualizada
+
+Memoria actualizada 
 
 Python es un lenguaje de programación versátil, intuitivo y con una sintaxis sencilla, diseñado para ser fácil de leer y escribir, lo que facilita la creación de prototipos rápidos y la ejecución de tareas complejas. A diferencia de otros lenguajes como Java, donde la programación puede ser más verbosa, Python busca reducir la cantidad de código necesario para expresar una idea, permitiendo que el código sea más limpio y comprensible. A continuación, detallo algunos aspectos clave de Python y ejemplos de código:
 
