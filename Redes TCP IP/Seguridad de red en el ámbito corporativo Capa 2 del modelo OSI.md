@@ -517,6 +517,7 @@ Supongamos la siguiente red:
 Un atacante introduce un dispositivo en la red (por ejemplo, una computadora con software malicioso) que simula ser un router legítimo. Este dispositivo envía actualizaciones RIP indicando que puede alcanzar `192.168.1.0/24` con una métrica muy baja (cercana a 1), incluso si no es cierto.
 
 ### Resultado:
+
 1. **Router B** actualiza su tabla de enrutamiento con la información falsa del atacante.
 2. Todo el tráfico destinado a `192.168.1.0/24` es redirigido hacia el dispositivo malicioso.
 3. El atacante puede:
