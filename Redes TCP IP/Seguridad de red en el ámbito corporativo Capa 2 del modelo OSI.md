@@ -546,9 +546,8 @@ ip rip authentication key-chain RIP-KEYS
 
 Implementa filtros para aceptar solo actualizaciones provenientes de fuentes confiables.
 
-### Ejemplo de configuración en un router Cisco:
+### Ejemplo de configuración en un router Cisco
 
-Copiar código
 access-list 10 permit 192.168.1.1
 access-list 10 deny any
 router rip
@@ -658,7 +657,7 @@ Los protocolos de redundancia de primer salto (First Hop Redundancy Protocols, F
 ### Ejemplos
 - **HSRP (Hot Standby Router Protocol)**: Propiedad de Cisco. Utiliza una dirección IP y MAC virtuales para conmutación transparente en IPv4.
 - **VRRP (Virtual Router Redundancy Protocol)**: Protocolo estándar abierto con funcionalidad similar a HSRP.
-- **GLBP (Gateway Load Balancing Protocol)**: Propiedad de Cisco. Además de la conmutación, permite balanceo de carga entre routers&#8203;:contentReference[oaicite:0]{index=0}.
+- **GLBP (Gateway Load Balancing Protocol)**: Propiedad de Cisco. Además de la conmutación, permite balanceo de carga entre routers.
 
 ---
 
@@ -681,7 +680,7 @@ Los protocolos de redundancia de primer salto (First Hop Redundancy Protocols, F
 3. **Escucha**: No es activo ni de respaldo, pero escucha a estos.
 4. **Hablar**: Participa en la elección del activo y respaldo; envía mensajes de saludo cada 3 segundos.
 5. **Standby**: Router de respaldo esperando 10 segundos para asumir como activo.
-6. **Activo**: Gana la elección y asume el rol de router activo&#8203;:contentReference[oaicite:1]{index=1}.
+6. **Activo**: Gana la elección y asume el rol de router activo.
 
 ### Configuración Básica
 
