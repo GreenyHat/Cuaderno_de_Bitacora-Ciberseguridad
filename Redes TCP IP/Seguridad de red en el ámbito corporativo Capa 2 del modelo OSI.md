@@ -1159,4 +1159,161 @@ El protocolo **ARP (Address Resolution Protocol)** se utiliza para resolver dire
 ### Mitigación
 
 - Activar **Dynamic ARP Inspection (DAI)** en switches administrados.
-- Establecer tablas ARP estát
+- Establecer tablas ARP estáticas para dispositivos críticos.
+- Monitorear anomalías en la red mediante sistemas IDS.
+
+---
+
+## Protocolo RIP
+
+**RIP (Routing Information Protocol)**, diseñado para el intercambio de rutas entre dispositivos, presenta debilidades debido a la falta de autenticación:
+
+- **Routing Table Poisoning**: Un atacante introduce rutas falsas en la tabla de enrutamiento, desviando tráfico hacia destinos maliciosos.
+
+### Mitigación
+
+- Implementar versiones más seguras de protocolos de enrutamiento como **OSPF** o **BGP**, que soporten autenticación.
+- Habilitar filtros de rutas para validar las actualizaciones de tablas de enrutamiento.
+
+---
+
+## Conclusión
+
+Aunque los protocolos de red cumplen funciones esenciales en la comunicación, su diseño inicial no consideraba escenarios modernos de ciberseguridad. Esto los hace vulnerables a una variedad de ataques, como **spoofing**, **flooding** y **envenenamiento de tablas de enrutamiento**.
+
+### Recomendaciones Generales
+
+- Configurar **firewalls** y sistemas de prevención/detección de intrusos (**IPS/IDS**) para mitigar ataques comunes.
+- Adoptar protocolos modernos que incluyan autenticación y cifrado.
+- Realizar auditorías periódicas de la configuración de red y monitorear eventos sospechosos.
+- Implementar segmentación de red para limitar el impacto de ataques locales.
+
+La seguridad de la red depende de combinar configuraciones robustas con herramientas especializadas y una supervisión continua.
+
+---
+
+# Protocolos de Red y sus Vulnerabilidades: Análisis y Ejemplos Educativos
+
+Los protocolos de red son la base de la comunicación digital, pero su diseño inicial no contemplaba los complejos desafíos de ciberseguridad actuales. A continuación, se explican las principales vulnerabilidades de protocolos comunes, acompañadas de ejemplos para ilustrar su funcionamiento y medidas de mitigación.
+
+---
+
+## Protocolo IP: Confianza en los Encabezados
+
+El **IP (Internet Protocol)** se encarga de la entrega de datos entre dispositivos en una red. Su diseño directo lo hace vulnerable a varios ataques:
+
+- **IP Spoofing**: Un atacante falsifica la dirección de origen en los paquetes, haciéndose pasar por un remitente legítimo. Ejemplo: Es como si un mensajero entregara un paquete sin verificar el remitente, confiando ciegamente en la etiqueta.
+- **Fragmentation Attacks**: Un atacante divide un paquete en múltiples fragmentos para evadir controles de seguridad. Ejemplo: Es como enviar piezas de un paquete grande para esconder contenido no autorizado.
+
+### Mitigación
+
+- Configurar firewalls para bloquear paquetes con encabezados inconsistentes.
+- Implementar inspección profunda de fragmentos en dispositivos críticos.
+
+---
+
+## Protocolo ICMP: Herramienta de Diagnóstico Bajo Ataque
+
+**ICMP (Internet Control Message Protocol)**, esencial para diagnóstico y comunicación de errores, puede ser explotado de las siguientes maneras:
+
+- **Ping Flood**: Solicitudes masivas de eco saturan los recursos de un dispositivo. Ejemplo: Como un teléfono que recibe llamadas constantes hasta quedarse sin batería.
+- **ICMP Redirect**: Un atacante redirige el tráfico hacia un destino no autorizado, facilitando ataques de intermediario. Ejemplo: Indicar a los conductores una ruta alternativa falsa para llevarlos a un lugar peligroso.
+
+### Mitigación
+
+- Limitar el uso de ICMP en redes internas sensibles.
+- Deshabilitar redirecciones ICMP o permitirlas solo desde dispositivos autenticados.
+
+---
+
+## Protocolo ARP: Resolución de Direcciones sin Verificación
+
+**ARP (Address Resolution Protocol)** resuelve direcciones IP en direcciones MAC. Su falta de autenticación permite ataques como:
+
+- **ARP Spoofing**: Un atacante responde con una dirección MAC falsa, redirigiendo el tráfico legítimo hacia sí mismo. Ejemplo: Alguien en el vecindario finge ser el dueño de una casa para recibir paquetes ajenos.
+
+### Mitigación
+
+- Activar **Dynamic ARP Inspection (DAI)** en switches administrados.
+- Usar tablas ARP estáticas para dispositivos críticos.
+- Monitorear respuestas ARP inconsistentes.
+
+---
+
+## Protocolo RIP: Enrutamiento con Debilidades
+
+El **RIP (Routing Information Protocol)**, diseñado para compartir rutas entre dispositivos, carece de autenticación, lo que lo expone a:
+
+- **Routing Table Poisoning**: Un atacante introduce rutas falsas, desviando tráfico hacia destinos maliciosos. Ejemplo: Es como un mapa falso que redirige a los viajeros por un camino inseguro.
+
+### Mitigación
+
+- Actualizar a protocolos más seguros como **OSPF** o **BGP**, que soporten autenticación.
+- Configurar filtros de rutas para aceptar solo información de fuentes confiables.
+
+---
+
+## Conclusión: Asegurando los Protocolos de Red
+
+Aunque los protocolos de red cumplen funciones críticas, su diseño original no considera las amenazas modernas, lo que los hace vulnerables a ataques como spoofing, flooding y envenenamiento de tablas.
+
+### Recomendaciones Generales
+
+1. **Implementar Firewalls y Sistemas de Prevención/Detección de Intrusos (IPS/IDS)**:
+   - Bloquear paquetes maliciosos y anomalías en la red.
+2. **Adoptar Protocolos Modernos con Seguridad Incorporada**:
+   - Preferir opciones con soporte de autenticación y cifrado.
+3. **Segmentación de Red**:
+   - Dividir la red en zonas aisladas para limitar el alcance de posibles ataques.
+4. **Monitoreo y Auditorías**:
+   - Utilizar herramientas como Wireshark para identificar tráfico sospechoso.
+5. **Entrenamiento y Concienciación**:
+   - Capacitar al personal técnico en mejores prácticas de seguridad.
+
+Con estas medidas, es posible minimizar riesgos y mantener una red más segura y resiliente.
+
+---
+
+---
+
+# Notas adicionales
+
+El administrador de una red configura STP con el fin de evitar la formación de bucles de capa 2. Sin embargo, quiere asegurarse que el switch que ha elegido como root siga siéndolo independientemente de las prioridades de los switches que se agreguen posteriormente. ¿Qué comando ha de configurar en el switch? Switch(config)# spanning-tree portfast bpduguard default Switch(config-if)# spanning-tree portfast Switch(config-if)# spanning-tree bpduguard enable Switch(config)# spanning-tree guard root
+
+El comando adecuado para garantizar que un switch específico siga siendo el root en un entorno de STP, independientemente de los switches que se agreguen posteriormente, no está en las opciones mencionadas. En este caso, lo que debe configurarse es la **prioridad del switch** para que tenga la prioridad más baja y, por ende, sea seleccionado como root switch en el protocolo Spanning Tree.
+
+El comando es:
+
+`Switch(config)# spanning-tree vlan [vlan-id] priority 0`
+
+O también puedes usar el comando global para todas las VLANs (si el switch soporta MST o PVST+):
+
+`Switch(config)# spanning-tree priority 0`
+
+### Explicación
+
+- **STP Root Switch**: En STP, el switch con la prioridad más baja es seleccionado como root. Si la prioridad no se configura manualmente, el valor predeterminado es **32768**. Configurar un valor más bajo (0 es el más bajo posible) asegura que el switch sea el root switch.
+
+Ninguno de los comandos en las opciones garantiza explícitamente que el switch seguirá siendo el root en el futuro. Sin embargo, el comando **`spanning-tree guard root`** (última opción) puede usarse para proteger puertos de acceso y evitar que un switch no autorizado pueda convertirse en root al enviar BPDUs superiores, pero **no configura al switch como root directamente**.
+
+### Qué hacen los comandos mencionados
+
+1. **`spanning-tree portfast bpduguard default`**:
+
+    - Habilita BPDU Guard globalmente en todos los puertos configurados como PortFast.
+    - Protege contra dispositivos que envían BPDUs en puertos de acceso, deshabilitándolos si se detecta una BPDU.
+2. **`spanning-tree portfast`**:
+
+    - Configura PortFast en una interfaz específica, permitiendo que el puerto entre directamente al estado de envío (forwarding) en STP.
+3. **`spanning-tree bpduguard enable`**:
+
+    - Habilita BPDU Guard en una interfaz específica.
+4. **`spanning-tree guard root`**:
+
+    - Configura Root Guard en un puerto para proteger contra cambios no deseados en el root switch desde ese puerto.
+
+Si el objetivo es mantener al switch como root, utiliza el comando **`spanning-tree vlan [vlan-id] priority 0`** para configurar la prioridad adecuada.
+
+---
+
+### Preguntas CISCO y Capa 2
