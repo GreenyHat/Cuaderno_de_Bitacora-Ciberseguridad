@@ -42,6 +42,8 @@ Algunas sugerencias para presentar estos proyectos:
 
 ## Programación
 
+### OCR documentos
+
 Necesito elaborar una herramienta contable que utilice teconologia OCR y que extraiga un excel en base a unos parámetros de entrada, y que fuese en Python, que necesito? Me puedes ayudar? Y por otro lado, si hay algo que haga eso ya elaborado me puedes decir cómo se llama y si es de código abierto?
 
 ###### ChatGPT Plus
@@ -205,3 +207,8 @@ python
 Copiar código
 
 `import pytesseract from PIL import Image import pandas as pd import re  pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  def extract_data(image_path):     image = Image.open(image_path)     text = pytesseract.image_to_string(image, lang='spa')          # Extraer fecha y monto con expresiones regulares     date_pattern = r'\d{2}/\d{2}/\d{4}'     amount_pattern = r'\d+\.\d{2}'      dates = re.findall(date_pattern, text)     amounts = re.findall(amount_pattern, text)          return dates, amounts  def save_to_excel(dates, amounts, output_path):     data = {"Fecha": dates, "Monto": amounts}     df = pd.DataFrame(data)     df.to_excel(output_path, index=False)  # Proceso principal image_path = 'factura.jpg' dates, amounts = extract_data(image_path) save_to_excel(dates, amounts, 'facturas.xlsx') print("Datos extraídos y guardados en facturas.xlsx")`
+
+
+### GitDocs 
+
+Interfaz sencilla que actue como un Drive pero usando Git y Github es viable??

@@ -251,22 +251,484 @@ Borrado de VLANs legítimas si un atacante se conecta a un enlace troncal en nue
 
 ## Introducción a la capa 3
 
+Las operaciones básicas de la capa 3 son:
 
+- Direccionamiento de dispositivos finales
+- Encapsulación
+- Enrutamiento
+- Desencapsulación
+
+### Características del protoclo IP
+
+![alt text](<Captura de pantalla (471).png>)
+![alt text](<Captura de pantalla (472).png>)
+![alt text](<Captura de pantalla (473).png>)
+
+#### Paquete IPv4
+
+![alt text](<Captura de pantalla (474).png>)
+
+#### Paquete IPv6
+
+![alt text](<Captura de pantalla (475).png>)
+
+#### Sobre la coexistencia de ambos protocolos
+
+- **Dual-stack**
+   Dispositivos y redes soportan tanto IPv4 como IPv6, seleccionando el protocolo más adecuado para cada conexión.
+  
+![alt text](<Captura de pantalla (476).png>)
+
+- **Tunelización**
+  Encapsula tráfico IPv6 dentro de paquetes IPv4 para atravesar redes que solo soportan IPv4.
+
+
+![alt text](<Captura de pantalla (477).png>)
+
+- **Traducción (NAT64, NAT46)**
+  Convierte paquetes entre IPv4 e IPv6, permitiendo la comunicación entre dispositivos que solo soportan uno de los dos protocolos
+
+![alt text](<Captura de pantalla (478).png>)
+
+### Tipos de enrutamiento
+
+## Enrutamiento
+- **Elemento principal de capa 3**: Router.
+  - Determina la mejor ruta para reenviar paquetes eligiendo la interfaz adecuada.
+
+## ¿Estático o Dinámico?
+
+| Característica       | **Routing Estático**                       | **Routing Dinámico**                     |
+|----------------------|--------------------------------------------|------------------------------------------|
+| **Complejidad de configuración** | Dependiente del tamaño                         | Independiente del tamaño                 |
+| **Cambios de topología**        | Requiere intervención manual                  | Adaptación automática                    |
+| **Escalabilidad**               | Limitada                                      | Alta                                     |
+| **Seguridad**                   | Inherente                                     | Debe configurarse                        |
+| **Uso de recursos**             | Sin recursos adicionales                     | Utiliza CPU, memoria y ancho de banda    |
+| **Predictibilidad de ruta**     | Definida por el administrador                | Depende de la topología                  |
+
+---
+
+## Clasificación del Routing Dinámico
+
+### Conceptos clave
+
+1. **Estructura de datos**: Uso de tablas o bases de datos.
+2. **Mensajes del protocolo de routing**: Intercambio de información con routers vecinos.
+3. **Algoritmo**: Determina el mejor camino.
+
+### Protocolos y Métricas
+
+| **Protocolo** | **Métrica**                                    |
+|---------------|-----------------------------------------------|
+| **RIP**       | Recuento de saltos                            |
+| -             | Cada router equivale a un salto.              |
+| -             | Límite de saltos: 15.                        |
+| **OSPF**      | Coste (ancho de banda acumulado origen-destino).|
+| -             | A mayor velocidad, menor coste.              |
+| **EIGRP**     | Basado en el ancho de banda más lento y retardos anormales. |
+| -             | Puede incluir carga y fiabilidad.            |
+
+---
+
+### Mejor Camino
+
+- Depende del protocolo y la métrica utilizada (saltos, coste, ancho de banda, etc.).
+
+
+## Comando: `show ip route`
+- **S**: Ruta estática.
+- **\***: Ruta predeterminada.
+- **O**: Ruta dinámica (OSPF).
+- **C**: Red conectada directamente.
+- **L**: Interfaz del router.
+
+### Principios de la Tabla de Routing
+1. Cada router toma sus decisiones de forma autónoma.
+2. Las tablas de enrutamiento entre routers pueden no coincidir.
+3. La información de enrutamiento no asegura retorno al origen.
+
+---
+
+## Tipos de Rutas
+
+### Redes Conectadas Directamente
+- Indicadas con:
+  - **C**: Red conectada directamente, incluye dirección IP y máscara.
+  - **L**: Interfaz del router (IPv4: /32, IPv6: /128).
+
+### Rutas Estáticas
+- Configuradas manualmente:
+  - IPv4: `ip route 10.0.4.0 255.255.255.0 10.0.3.2`
+  - IPv6: `ipv6 route 2001:db8:acad:4::/64 2001:db8:acad:3::2`
+
+### Rutas Dinámicas
+- Redes descubiertas automáticamente mediante protocolos de enrutamiento.
+
+### Ruta Predeterminada
+- Utilizada en ausencia de una ruta más específica.
+- Reduce el número de rutas en la tabla.
+- Representada como:
+  - IPv4: `0.0.0.0/0`
+  - IPv6: `::/0`
+
+---
+
+## Elección de la Mejor Ruta
+
+### Definición
+- La mejor ruta es la de **coincidencia más larga** en la tabla de enrutamiento.
+
+### Ejemplo de IPv4
+1. Dirección del host de destino: `172.16.0.10`
+   - Binario: `10101100.00010000.00000000.00001010`
+2. Longitudes de prefijo en la tabla:
+   - `172.16.0.0/12`: Coincidencia parcial.
+   - `172.16.0.0/18`: Coincidencia más larga.
+   - `172.16.0.0/26`: **Mejor ruta** (coincidencia más específica).
 
 ## Rutas estáticas
 
+### Ventajas y Desventajas de las Rutas Estáticas
+
+| **Ventajas**                           | **Desventajas**                           |
+|----------------------------------------|-------------------------------------------|
+| Fácil de implementar en redes pequeñas | Baja escalabilidad                        |
+| Muy seguro                             | Mayor complejidad en redes grandes        |
+| Ruta fija y predecible                 | Requiere intervención manual, no recalcula rutas automáticamente |
+| No utiliza recursos adicionales        |                                          |
+
+---
+
+### Verificación de Rutas Estáticas
+- Comando: `show ip route`
+- Permite comprobar la configuración y estado de las rutas.
+
+---
+
+### Ejemplo de Configuración en Packet Tracer
+
+#### Topología de Red
+- Redes IPv4:
+- `192.168.1.0/24`, `192.168.2.0/24`, `192.168.3.0/24`
+- `10.0.0.0/32`, `10.0.0.4/32`, `10.0.0.8/32`
+- Rutas:
+- **Estándar**: Redes conectadas directamente.
+- **Flotantes**: Alternativas en caso de fallo.
+
+#### Configuración de Rutas Predeterminadas
+- Configuración básica para rutas principales y redundantes en IPv4 e IPv6.
+
 ## RIP
+
+### Descripción General
+- Protocolo de encaminamiento dinámico interior. Establece las entradas del router se aprenden mediante los mensajes del protocolo dentro de una **intranet**
+  
+- Utiliza **UDP** en el puerto **520**.
+- Métrica: **número de saltos**.
+- Algoritmo: **Bellman-Ford**. Calcula una ruta óptima con un máximo de saltos en 15
+- Límite de saltos: **15**.
+- Implementa:
+  - **Regla de horizonte dividido**.
+  - **Envenenamiento de rutas**.
+- Versiones:
+  - **RIPv1**: IPv4 sin clase.
+  - **RIPv2**: IPv4 con clase, soporta VLSM y CIDR.
+  - **RIPng**: RIP para IPv6.
+
+---
+
+### Comparativa RIPv1 vs RIPv2
+
+| Característica             | **RIPv1**                                | **RIPv2**                                |
+|----------------------------|------------------------------------------|------------------------------------------|
+| Métrica                    | Número de saltos                        | Número de saltos                        |
+| Límite de saltos           | 15                                      | 15                                      |
+| Distancia administrativa   | 120                                     | 120                                     |
+| Tipo de transmisión        | **Broadcast** (255.255.255.255)         | **Multicast** (224.0.0.9)               |
+| Soporte VLSM y CIDR        | No                                      | Sí                                      |
+| Autenticación              | No                                      | Sí (MD5)                                |
+
+---
+
+### Modos de Funcionamiento y Tipos de Mensajes
+
+#### Modos de Funcionamiento
+1. **Activo**:
+   - Operado por routers.
+2. **Pasivo**:
+   - Conexión con usuarios finales.
+
+#### Tipos de Mensajes
+1. **Request**:
+   - Solicita parte o toda la tabla de rutas.
+2. **Reply**:
+   - Respuesta a un request.
+   - Actualizaciones periódicas o por cambios de topología.
+
+---
+
+## Temporizadores de RIP
+
+| **Temporizador**           | **Intervalo**                            |
+|----------------------------|------------------------------------------|
+| Periódico (update timer)   | 30 segundos                             |
+| Caducidad (invalid timer)  | 180 segundos                            |
+| Purga (flush timer)        | 240 segundos                            |
+| Retención (holddown timer) | 180 segundos                            |
+
+![alt text](<Captura de pantalla (479).png>)
+---
+
+## Configuración de RIPv2
+
+`R1(config)# router rip
+R1(config-router)# version 2
+R1(config-router)# no auto-summary
+R1(config-router)# network <network-address>
+R1(config-router)# passive-interface <interface-id>
+R1(config-router)# redistribute static
+R1(config)# ip route 0.0.0.0 0.0.0.0 <next-hop-address | exit-intf>`
+
+## RIP Poisoning: Concepto, Ejemplo y Contramedidas
+
+## ¿Qué es RIP Poisoning?
+
+El **RIP Poisoning** (envenenamiento de RIP) es un ataque en redes que utiliza el protocolo de enrutamiento RIP (**Routing Information Protocol**). Este ataque ocurre cuando un actor malintencionado inyecta rutas falsas o engañosas en las tablas de enrutamiento de los routers, provocando interrupciones en el tráfico de red. 
+
+El objetivo del ataque puede ser:
+- Redirigir el tráfico
+- Interceptar información sensible.
+- Denegar el acceso a ciertas rutas (causar una denegación de servicio).
+
+RIP Poisoning explota la simplicidad de RIP, que carece de mecanismos sólidos de autenticación en su diseño original.
+
+---
+
+## Ejemplo de RIP Poisoning
+
+Supongamos la siguiente red:
+
+- **Router A** tiene conectividad con la red `192.168.1.0/24`.
+- **Router B** tiene conectividad con la red `192.168.2.0/24`.
+- Ambos routers utilizan RIP para intercambiar información de enrutamiento.
+
+Un atacante introduce un dispositivo en la red (por ejemplo, una computadora con software malicioso) que simula ser un router legítimo. Este dispositivo envía actualizaciones RIP indicando que puede alcanzar `192.168.1.0/24` con una métrica muy baja (cercana a 1), incluso si no es cierto.
+
+### Resultado:
+1. **Router B** actualiza su tabla de enrutamiento con la información falsa del atacante.
+2. Todo el tráfico destinado a `192.168.1.0/24` es redirigido hacia el dispositivo malicioso.
+3. El atacante puede:
+   - Interceptar el tráfico.
+   - Modificar los datos.
+   - Bloquear la comunicación.
+
+---
+
+## Contramedidas para prevenir RIP Poisoning
+
+### 1. Autenticación de RIP MD5
+
+- Utiliza versiones de RIP que soporten autenticación (por ejemplo, RIP v2).
+- Configura claves compartidas para verificar la legitimidad de las actualizaciones RIP.
+
+**Ejemplo de configuración en un router Cisco:**
+
+router rip
+version 2
+network 192.168.1.0
+network 192.168.2.0
+passive-interface default
+ip rip authentication mode md5
+ip rip authentication key-chain RIP-KEYS
+
+### 2. Filtrado de Rutas
+
+Implementa filtros para aceptar solo actualizaciones provenientes de fuentes confiables.
+
+### Ejemplo de configuración en un router Cisco:
+
+Copiar código
+access-list 10 permit 192.168.1.1
+access-list 10 deny any
+router rip
+distribute-list 10 in
+
+### 3. Uso de Protocolos de Enrutamiento Más Seguros
+
+Considera migrar a protocolos más modernos y seguros, como OSPF o EIGRP, que incluyen mecanismos robustos contra ataques de envenenamiento.
+
+### 4. Monitorización de la Red
+
+Implementa sistemas de detección de intrusiones (IDS) para identificar actividades sospechosas relacionadas con RIP.
+Revisa periódicamente las tablas de enrutamiento para detectar rutas anómalas o inesperadas.
+
+---
 
 ## OSPF
 
-## HSRP
+- **Protocolo de enrutamiento**: OSPF es un protocolo de enrutamiento de estado de enlace utilizado en redes IP para calcular rutas óptimas mediante el **algoritmo de Dijkstra.** Es tambien de encaminamiento dinámico interior, igual que RIP. Hay dos versiones:
+  - v2 --> IPv4
+  - v3 --> IPv6
+- **Áreas**: Las redes OSPF se dividen en áreas para optimizar el uso de recursos y reducir el tamaño de las tablas de enrutamiento. **Todas las áreas deben conectarse al Área 0 (backbone)**.
+  ![alt text](<Captura de pantalla (484).png>)
+- **Tipos de routers**:
+  - **Router Interno (IR)**: Pertenece a una sola área.
+  - **Router Backbone (BR)**: Forma parte del Área 0.
+  - **Router de Área Fronteriza (ABR)**: Conecta múltiples áreas.
+  - **Router de Frontera del Sistema Autónomo (ASBR)**: Conecta redes OSPF con sistemas autónomos externos.
+- **Coste de enlace**: Métrica basada en el ancho de banda para calcular rutas óptimas.
+
+---
+
+## Estados de funcionamiento de OSPF (estados del router)
+
+1. **Down**: El router no ha recibido paquetes Hello del vecino.
+2. **Init**: Se reciben paquetes Hello, pero la relación de vecindad aún no se ha establecido.
+3. **Two-Way**: Vecinos reconocidos, pero no seleccionados como DR (Designated Router) o BDR (Backup Designated Router).
+4. **ExStart**: Los routers negocian roles y sincronizan bases de datos.
+5. **Exchange**: Intercambio inicial de descripciones de la LSDB (Link State Database).
+6. **Loading**: Solicitud y carga de enlaces adicionales necesarios.
+7. **Full**: Relación de vecindad completa y sincronización de la LSDB.
+
+### Tipos de paquete
+
+![alt text](<Captura de pantalla (482).png>)
+
+## Funcionamiento de OSPF (Área Única)
+
+1. **Configuración inicial**:
+   - Asignar ID del router (`router-id`).
+   - Habilitar OSPF en interfaces (`network`).
+   - Definir el área (`area 0` para área única).
+2. **Descubrimiento de vecinos**:
+   - Los routers intercambian paquetes Hello para identificar vecinos.
+   - Verifican parámetros comunes: área, temporizadores y autenticación.
+3. **Establecimiento de la adyacencia**:
+   - Los routers negocian roles y sincronizan bases de datos mediante LSA (Link State Advertisement).
+4. **Cálculo de rutas**:
+   - Usan el algoritmo SPF (Shortest Path First) para calcular las rutas más óptimas y generar la tabla de enrutamiento.
+
+---
+
+## Fallos de seguridad y contramedidas
+
+### Fallos de seguridad
+
+1. **Intercepción de tráfico (Man-in-the-Middle)**:
+   - Un atacante puede interceptar o modificar el tráfico OSPF.
+2. **Inyección de LSA falsas**:
+   - Un atacante podría enviar LSA falsas para desestabilizar la red.
+3. **Negación de servicio (DoS)**:
+   - Sobrecarga de procesadores de routers enviando paquetes OSPF maliciosos.
+4. **Vecinos no autorizados**:
+   - Establecimiento de relaciones de vecindad no autorizadas.
+
+### Contramedidas
+
+1. **Autenticación OSPF**:
+   - Configurar autenticación MD5 o SHA para proteger paquetes OSPF:
+     ```
+     interface GigabitEthernet0/0
+     ip ospf authentication message-digest
+     ip ospf message-digest-key 1 md5 <contraseña>
+     ```
+2. **Filtrado de acceso**:
+   - Usar ACLs para limitar el acceso a los routers solo desde dispositivos autorizados.
+3. **Configuración de temporizadores**:
+   - Ajustar temporizadores Hello y Dead para minimizar el impacto de ataques DoS.
+4. **Segmentación de áreas**:
+   - Dividir la red en áreas para reducir la propagación de fallos y mejorar la seguridad.
+5. **Monitoreo y logs**:
+   - Habilitar registros de OSPF para detectar actividades inusuales:
+     ```ogging ospf events```
+6. **Actualizaciones y parches**:
+   - Mantener el software del router actualizado para mitigar vulnerabilidades conocidas.
+
+---
+
+**Nota**: Estas configuraciones son ejemplos básicos para el estudio.
+
+
+## Protocolos de Redundancia de Primer Salto (FHRP)
+
+### ¿Qué son?
+Los protocolos de redundancia de primer salto (First Hop Redundancy Protocols, FHRP) aseguran la alta disponibilidad en las redes al permitir la conmutación transparente entre puertas de enlace de primer salto. Esto elimina puntos únicos de fallo (SPOF).
+
+### Ejemplos
+- **HSRP (Hot Standby Router Protocol)**: Propiedad de Cisco. Utiliza una dirección IP y MAC virtuales para conmutación transparente en IPv4.
+- **VRRP (Virtual Router Redundancy Protocol)**: Protocolo estándar abierto con funcionalidad similar a HSRP.
+- **GLBP (Gateway Load Balancing Protocol)**: Propiedad de Cisco. Además de la conmutación, permite balanceo de carga entre routers&#8203;:contentReference[oaicite:0]{index=0}.
+
+---
+
+## Funcionamiento del HSRP
+
+### Descripción General
+
+- Protocolo de capa 3 propiedad de Cisco.
+- Utiliza puertas de enlace redundantes para garantizar conmutación por fallo transparente.
+- Define direcciones IP y MAC virtuales.
+- Forma un grupo HSRP con un router activo y uno o más de respaldo, eliminando puntos únicos de fallo (SPOF).
+- Comunicación mediante:
+  - **Dirección multicast**: 224.0.0.2 (versión 1) o 224.0.0.102 (versión 2).
+  - **Puerto UDP**: 1985.
+
+### Estados del Protocolo
+
+1. **Inicial**: El router comienza el proceso HSRP.
+2. **Aprendizaje**: El router espera escuchar al activo. No tiene IP virtual.
+3. **Escucha**: No es activo ni de respaldo, pero escucha a estos.
+4. **Hablar**: Participa en la elección del activo y respaldo; envía mensajes de saludo cada 3 segundos.
+5. **Standby**: Router de respaldo esperando 10 segundos para asumir como activo.
+6. **Activo**: Gana la elección y asume el rol de router activo&#8203;:contentReference[oaicite:1]{index=1}.
+
+### Configuración Básica
+
+1. Configuración del router de respaldo:
+
+   ```
+   R2(config)# interface interface-id
+   R2(config-if)# standby version 2
+   R2(config-if)# standby 1 ip virtual-ip-address
+
+2. Configuración del router activo:
+
+`R1(config)# interface interface-id`
+`R1(config-if)# standby version 2`
+`R1(config-if)# standby 1 ip virtual-ip-address`
+`R1(config-if)# standby 1 priority priority-value`
+`R1(config-if)# standby 1 preempt`
+
+### Fallos de Seguridad en HSRP
+
+#### Tipos de Ataques
+
+- Robo del rol de router activo: Interceptación de datos (Man in the Middle): Lectura, modificación o borrado de información transmitida.
+- Denegación de servicio (DoS): Impide acceso a recursos o dispositivos
+- Degradación de servicio: Paquetes fraudulentos intermitentes generan cortes​
+
+#### Configuración Segura de HSRP
+
+##### Buenas Prácticas
+
+- Autenticación MD5:
+- Asegura la integridad de la comunicación: `R1(config-if)# standby 1 authentication md5 key-chain key-chain-name`
+- Prioridad Máxima al Router Activo
+- Define el router activo claramente: `R1(config-if)# standby 1 priority 255`
+- Uso de ACLs:
+  - Standard: Filtra por origen.
+  - Extendida: Filtra por origen, destino y aplicación.
+- Implementación de IPSec:
+- Garantiza confidencialidad, integridad y autenticación de las conexiones:
+
+
 
 ## Capa 7
 
 ## DHCP
 
 ## SNMP
-
 
 
 

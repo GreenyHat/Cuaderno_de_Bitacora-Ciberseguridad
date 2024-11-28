@@ -128,27 +128,17 @@ Es una característica del sistema de archivos NTFS que permite asociar metadato
 - NTFS permite añadir flujos adicionales de datos a un archivo sin afectar el contenido visible del archivo principal.
 - Ejemplo: `archivo.txt:stream_malicioso`.
 
-#### **Explotación:**
+#### **Explotación**
 
 1. **Ocultar malware:**
     - Un atacante puede almacenar ejecutables o scripts maliciosos en un ADS.
     - Por ejemplo:
-        
-        bash
-        
-        Copiar código
-        
-        `echo MaliciousCode > file.txt:malicious_stream`
-        
+`echo MaliciousCode > file.txt:malicious_stream`
+
 2. **Ejecución del ADS:**
     - Los flujos ADS pueden ejecutarse directamente en sistemas Windows:
-        
-        bash
-        
-        Copiar código
-        
+
         `start file.txt:malicious_stream`
-        
 
 #### **Detección y Mitigación:**
 

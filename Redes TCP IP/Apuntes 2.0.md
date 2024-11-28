@@ -1,3 +1,55 @@
+# Apuntes
+
+## Consideraciones sobre PDU en el modelo OSI
+
+En el modelo OSI (Open Systems Interconnection), el término PDU (Protocol Data Unit) se refiere a la unidad de datos que se intercambia entre capas del modelo. Cada capa tiene su propia denominación para los datos que procesa y encapsula, y el PDU cambia de nombre en cada capa según su funcionalidad específica. A continuación, se detalla el significado de las PDU en cada capa:
+
+### Capa 5-7: Dato (Data)
+**Capas involucradas**: Aplicación, Presentación y Sesión.
+**Función**: Estas capas manejan los datos en su forma más básica y cercana a las aplicaciones del usuario. En este nivel, los datos son simplemente información que se prepara para ser transmitida.
+**PDU**: Se llama Dato, ya que no ha sido encapsulado con información específica de las capas inferiores.
+### Capa 4: Segmento
+**Capa involucrada**: Transporte.
+**Función**: En esta capa, se dividen los datos en segmentos más pequeños para facilitar su envío y manejo. Aquí se añaden encabezados para el control de flujo, la corrección de errores y el aseguramiento del orden de los datos.
+**PDU**: Se llama Segmento. Si el protocolo usado es UDP, la unidad se denomina Datagrama.
+### Capa 3: Paquete
+**Capa involucrada**: Red.
+**Función**: En esta capa se agrega información relacionada con el direccionamiento lógico (por ejemplo, direcciones IP). Esto permite que los datos sean encaminados a través de redes hacia el destino correcto.
+**PDU**: Se llama Paquete.
+### Capa 2: Trama
+**Capa involucrada**: Enlace de Datos.
+**Función**: Los paquetes son encapsulados en tramas, que incluyen información adicional para detectar y corregir errores en la transmisión y para direccionamiento físico (por ejemplo, direcciones MAC).
+**PDU**: Se llama Trama.
+### Capa 1: Bit
+**Capa involucrada**: Física.
+**Función**: La trama se convierte en una secuencia de bits que se transmiten como señales eléctricas, ópticas o de radio a través del medio físico.
+**PDU**: Se llama Bit, ya que esta capa se ocupa únicamente de la transmisión de los datos en forma de pulsos.
+
+#### Resumen Visual
+
+| **Capa OSI** | **PDU**       | **Propósito Principal**                 |
+|--------------|---------------|-----------------------------------------|
+| 5-7          | Dato          | Preparación de los datos para la red.  |
+| 4            | Segmento      | Gestión de transporte y flujo.         |
+| 3            | Paquete       | Enrutamiento lógico.                   |
+| 2            | Trama         | Dirección física y detección de errores|
+| 1            | Bit           | Transmisión física de los datos.       |
+
+La transformación de la PDU en cada capa se llama encapsulación, y el proceso inverso, al recibir datos, es la desencapsulación. Esto asegura que cada capa solo maneje los datos relevantes para su propósito.
+
+#### Modelo TCP/IP
+
+### Resumen Visual del Modelo TCP/IP
+
+| **Capa TCP/IP**      | **PDU**       | **Propósito Principal**                     |
+|-----------------------|---------------|---------------------------------------------|
+| Aplicación           | Dato          | Interacción con las aplicaciones del usuario.|
+| Transporte           | Segmento      | Gestión del transporte y flujo de datos.    |
+| Internet             | Paquete       | Enrutamiento lógico entre redes.           |
+| Acceso a la Red      | Trama/Bit     | Dirección física y transmisión de datos.    |
+
+**Nota**: En el modelo TCP/IP, las capas Aplicación, Presentación, y Sesión del modelo OSI están combinadas en una sola capa llamada Aplicación. Además, las capas de Enlace de Datos y Física se agrupan como Acceso a la Red.
+
 ## **Direcciones IP: Validez y Subredes**
 
 ### Validación de Direcciones IP
@@ -383,7 +435,7 @@ Ejemplo de configuración estática:
 - **Traceroute:** Rastrea la ruta de paquetes en la red.
 
 
-# _Mis preguntas_
+# Mis preguntas
 
 ## Cómo aprovechar en un ataque la no fiabilidad del protocolo UDP y cómo se contraresta? Puedo experimentar?
 
