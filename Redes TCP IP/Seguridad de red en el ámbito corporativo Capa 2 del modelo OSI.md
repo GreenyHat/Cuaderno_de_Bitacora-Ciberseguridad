@@ -1,5 +1,3 @@
-![[siete-capas-de-modelo-osi-1623136242-cywGEI9RkM.webp]]
-
 # Seguridad corporativa en la capa 2
 
 ## Dudas
