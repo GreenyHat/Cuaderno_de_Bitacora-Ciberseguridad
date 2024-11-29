@@ -21,6 +21,8 @@ LA IMPORTANCIA DEL ETIQUETADO EN LAS VLANs
 Interfaz de redes?
 Anuncios DTP
 
+# Seguridad en la capa 2
+
 ## Protocolo ARP
 
 Es un protocolo de la capa de enlace de datos y se encarga de encontrar la direccion MAC asociada a una direccion IP.
