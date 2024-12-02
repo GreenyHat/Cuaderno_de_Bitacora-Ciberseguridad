@@ -21,7 +21,7 @@ LA IMPORTANCIA DEL ETIQUETADO EN LAS VLANs
 Interfaz de redes?
 Anuncios DTP
 
-# Seguridad en la capa 2
+## Seguridad en la capa 2
 
 ## Protocolo ARP (Address Resolution Protocol)
 
@@ -275,7 +275,7 @@ Borrado de VLANs legítimas si un atacante se conecta a un enlace troncal en nue
 - Usar versión 3 del protocolo
   - Primary Server (Nos asegura que solo hay un sv en la red)
 
-# Seguridad corporativa en la capa 3 y 7
+## Seguridad corporativa en la capa 3 y 7
 
 ## Introducción a la capa 3
 
@@ -321,6 +321,7 @@ Las operaciones básicas de la capa 3 son:
 ### Tipos de enrutamiento
 
 ## Enrutamiento
+
 - **Elemento principal de capa 3**: Router.
   - Determina la mejor ruta para reenviar paquetes eligiendo la interfaz adecuada.
 
@@ -363,8 +364,8 @@ Las operaciones básicas de la capa 3 son:
 
 - Depende del protocolo y la métrica utilizada (saltos, coste, ancho de banda, etc.).
 
-
 ## Comando: `show ip route`
+
 - **S**: Ruta estática.
 - **\***: Ruta predeterminada.
 - **O**: Ruta dinámica (OSPF).
@@ -372,6 +373,7 @@ Las operaciones básicas de la capa 3 son:
 - **L**: Interfaz del router.
 
 ### Principios de la Tabla de Routing
+
 1. Cada router toma sus decisiones de forma autónoma.
 2. Las tablas de enrutamiento entre routers pueden no coincidir.
 3. La información de enrutamiento no asegura retorno al origen.
@@ -381,19 +383,23 @@ Las operaciones básicas de la capa 3 son:
 ## Tipos de Rutas
 
 ### Redes Conectadas Directamente
+
 - Indicadas con:
   - **C**: Red conectada directamente, incluye dirección IP y máscara.
   - **L**: Interfaz del router (IPv4: /32, IPv6: /128).
 
 ### Rutas Estáticas
+
 - Configuradas manualmente:
   - IPv4: `ip route 10.0.4.0 255.255.255.0 10.0.3.2`
   - IPv6: `ipv6 route 2001:db8:acad:4::/64 2001:db8:acad:3::2`
 
 ### Rutas Dinámicas
+
 - Redes descubiertas automáticamente mediante protocolos de enrutamiento.
 
 ### Ruta Predeterminada
+
 - Utilizada en ausencia de una ruta más específica.
 - Reduce el número de rutas en la tabla.
 - Representada como:
@@ -405,9 +411,11 @@ Las operaciones básicas de la capa 3 son:
 ## Elección de la Mejor Ruta
 
 ### Definición
+
 - La mejor ruta es la de **coincidencia más larga** en la tabla de enrutamiento.
 
 ### Ejemplo de IPv4
+
 1. Dirección del host de destino: `172.16.0.10`
    - Binario: `10101100.00010000.00000000.00001010`
 2. Longitudes de prefijo en la tabla:
@@ -429,6 +437,7 @@ Las operaciones básicas de la capa 3 son:
 ---
 
 ### Verificación de Rutas Estáticas
+
 - Comando: `show ip route`
 - Permite comprobar la configuración y estado de las rutas.
 
@@ -437,6 +446,7 @@ Las operaciones básicas de la capa 3 son:
 ### Ejemplo de Configuración en Packet Tracer
 
 #### Topología de Red
+
 - Redes IPv4:
 - `192.168.1.0/24`, `192.168.2.0/24`, `192.168.3.0/24`
 - `10.0.0.0/32`, `10.0.0.4/32`, `10.0.0.8/32`
@@ -445,11 +455,13 @@ Las operaciones básicas de la capa 3 son:
 - **Flotantes**: Alternativas en caso de fallo.
 
 #### Configuración de Rutas Predeterminadas
+
 - Configuración básica para rutas principales y redundantes en IPv4 e IPv6.
 
 ## RIP
 
 ### Descripción General
+
 - Protocolo de encaminamiento dinámico interior. Establece las entradas del router se aprenden mediante los mensajes del protocolo dentro de una **intranet**
   
 - Utiliza **UDP** en el puerto **520**.
@@ -489,6 +501,7 @@ Las operaciones básicas de la capa 3 son:
    - Conexión con usuarios finales.
 
 #### Tipos de Mensajes
+
 1. **Request**:
    - Solicita parte o toda la tabla de rutas.
 2. **Reply**:
@@ -507,6 +520,7 @@ Las operaciones básicas de la capa 3 son:
 | Retención (holddown timer) | 180 segundos                            |
 
 ![alt text](<Captura de pantalla (479).png>)
+
 ---
 
 ## Configuración de RIPv2
@@ -523,9 +537,10 @@ R1(config)# ip route 0.0.0.0 0.0.0.0 <next-hop-address | exit-intf>`
 
 ## ¿Qué es RIP Poisoning?
 
-El **RIP Poisoning** (envenenamiento de RIP) es un ataque en redes que utiliza el protocolo de enrutamiento RIP (**Routing Information Protocol**). Este ataque ocurre cuando un actor malintencionado inyecta rutas falsas o engañosas en las tablas de enrutamiento de los routers, provocando interrupciones en el tráfico de red. 
+El **RIP Poisoning** (envenenamiento de RIP) es un ataque en redes que utiliza el protocolo de enrutamiento RIP (**Routing Information Protocol**). Este ataque ocurre cuando un actor malintencionado inyecta rutas falsas o engañosas en las tablas de enrutamiento de los routers, provocando interrupciones en el tráfico de red.
 
 El objetivo del ataque puede ser:
+
 - Redirigir el tráfico
 - Interceptar información sensible.
 - Denegar el acceso a ciertas rutas (causar una denegación de servicio).
@@ -544,7 +559,7 @@ Supongamos la siguiente red:
 
 Un atacante introduce un dispositivo en la red (por ejemplo, una computadora con software malicioso) que simula ser un router legítimo. Este dispositivo envía actualizaciones RIP indicando que puede alcanzar `192.168.1.0/24` con una métrica muy baja (cercana a 1), incluso si no es cierto.
 
-### Resultado:
+### Resultado
 
 1. **Router B** actualiza su tabla de enrutamiento con la información falsa del atacante.
 2. Todo el tráfico destinado a `192.168.1.0/24` es redirigido hacia el dispositivo malicioso.
@@ -657,11 +672,11 @@ Revisa periódicamente las tablas de enrutamiento para detectar rutas anómalas 
 
 1. **Autenticación OSPF**:
    - Configurar autenticación MD5 o SHA para proteger paquetes OSPF:
-     ```
-     interface GigabitEthernet0/0
-     ip ospf authentication message-digest
-     ip ospf message-digest-key 1 md5 <contraseña>
-     ```
+
+     ``interface GigabitEthernet0/``
+     ``ip ospf authentication message-digest``
+     ``ip ospf message-digest-key 1 md5 <contraseña>``
+
 2. **Filtrado de acceso**:
    - Usar ACLs para limitar el acceso a los routers solo desde dispositivos autorizados.
 3. **Configuración de temporizadores**:
@@ -694,7 +709,7 @@ Los protocolos de redundancia de primer salto (First Hop Redundancy Protocols, F
 
 ## Funcionamiento del HSRP
 
-### Descripción General
+### Descripción Generaal
 
 - Protocolo de capa 3 propiedad de Cisco.
 - Utiliza puertas de enlace redundantes para garantizar conmutación por fallo transparente.
@@ -720,7 +735,6 @@ Los protocolos de redundancia de primer salto (First Hop Redundancy Protocols, F
 ``R2(config)# interface interface-id``
 ``R2(config-if)# standby version 2``
 ``R2(config-if)# standby 1 ip virtual-ip-address``
-
 2. Configuración del router activo:
 
 `R1(config)# interface interface-id`
@@ -817,7 +831,6 @@ En el modelo TCP/IP, las funciones de las capas **Aplicación, Presentación y S
 
 - **HTTP/HTTPS**: Protocolo para la transferencia de hipertexto y su versión segura.
 
-
 ## DNS y DHCP: Funcionamiento, Configuración y Seguridad
 
 ## Funcionamiento de DNS
@@ -863,7 +876,7 @@ El **Protocolo de Configuración Dinámica de Host (DHCP)** asigna dinámicament
 
 ### Configuración básica
 
-`` R1(config)# ip dhcp pool <pool-name>``
+``R1(config)# ip dhcp pool <pool-name>``
 ``R1(dhcp-config)# network <network-address> <mask>``
 ``R1(dhcp-config)# default-router <gateway-address>``
 ``R1(dhcp-config)# dns-server <dns-server-address>``
@@ -939,7 +952,7 @@ El correcto funcionamiento y la seguridad de DNS y DHCP son pilares esenciales e
 
 El **Protocolo Simple de Administración de Red (SNMP)** facilita el intercambio de información de administración en dispositivos de red. Opera en los puertos UDP 161 (administración) y 162 (traps).
 
-### Características principales
+### Característicass principales
 
 - Modelo cliente/servidor.
 - Componentes: Administrador SNMP (NMS), agente SNMP, dispositivos administrados y MIB (Base de Información de Gestión).
@@ -966,11 +979,12 @@ El **Protocolo Simple de Administración de Red (SNMP)** facilita el intercambio
 1. **Desactivar SNMP en dispositivos innecesarios**:
 
   ``R1(config)# no snmp-server community <password>``
-  
 2. **Usar SNMPv3**:
-   - Autenticación con MD5/SHA.
-   - Cifrado con DES/AES.
-3. **Configurar SNMP view**:
+
+- Autenticación con MD5/SHA
+- Cifrado con DES/AES.
+
+1. **Configurar SNMP view**:
   
   ``R1(config)# snmp-server view <view-name> <oid {included | excluded}>``
 
@@ -1015,7 +1029,7 @@ El **Protocolo de Enrutamiento de Estado de Enlace (OSPF)** facilita el enrutami
 
 ## Configuración Segura de OSPF
 
-### Mitigación de ataques
+### Mitigación de ataques OSPF
 
 1. **Autenticación MD5**:
 ``R1(config-if)# ip ospf message-digest-key <key-number> md5 <password>``
@@ -1025,8 +1039,8 @@ El **Protocolo de Enrutamiento de Estado de Enlace (OSPF)** facilita el enrutami
 3. **Habilitar TTL Security**:
 ``R1(config-router)# ttl-security all-interfaces hops <hop-count>``
 
+## Conclusión gral
 
-## Conclusión
 La seguridad y configuración adecuada de SNMP y OSPF son esenciales para garantizar la integridad y disponibilidad de las redes. Utilizar las versiones más seguras y aplicar medidas de mitigación protege contra amenazas comunes.
 
 
