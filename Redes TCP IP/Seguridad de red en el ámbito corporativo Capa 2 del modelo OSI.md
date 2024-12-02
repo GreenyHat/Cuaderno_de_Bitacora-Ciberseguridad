@@ -23,7 +23,7 @@ Anuncios DTP
 
 # Seguridad en la capa 2
 
-## Protocolo ARP
+## Protocolo ARP (Address Resolution Protocol)
 
 Es un protocolo de la capa de enlace de datos y se encarga de encontrar la direccion MAC asociada a una direccion IP.
 
@@ -44,10 +44,19 @@ Es un protocolo de la capa de enlace de datos y se encarga de encontrar la direc
 
 ## Fallos de seguridad ARP
 
-### ARP Spoofing
+### ARP Spoofing mediante ARP Snooping
+
+**Snooping (recopilación pasiva)**: El atacante configura su tarjeta de red en modo promiscuo para capturar todo el tráfico que pasa por la red, incluidas las peticiones y respuestas ARP.
+> El **ARP Spoofing** es ya un ataque activo
+
+**Objetivo**: Mapear las direcciones IP y MAC de los dispositivos en la red.
+Obtener información de topología (como la ubicación del gateway y dispositivos clave).
+Identificar dispositivos activos y sus posibles vulnerabilidades.
 
 ![ARP Spoofin](<Captura de pantalla (444).png>)
 ![ARP Spoofing 2](<Captura de pantalla (445).png>)
+
+>Debe aclararse que para llevar este tipo de ataque, el atacante debería formar parte de la misma LAN, ya fuera por cable o mediante una WIFI desprotegida para poder realzar las escuchas con las herramientas pertinentes: Wireshark, TCPDump y realizar el ataque manualmente o usar herramientas desarrolladas para tal fin como: ettercap, arpsoop... De forma complementaria se pueden usar herramientas como BurpSuite para el analisis, analizar datos adicionales y tal vez buscar otros **vecotres de ataque**
 
 #### Ataques asociados
 
@@ -58,7 +67,7 @@ Es un protocolo de la capa de enlace de datos y se encarga de encontrar la direc
 
 ### Solución propuesta
 
-- Utilizar ARP estático (los comandos varian dependiendo del dispositivo)
+- Utilizar ARP estático (los comandos varian dependiendo del dispositivo y los configura el administrador y no mediante protocolo)
 - Software de deteccion y prevencion de ARP Spoofing
   - Arpwatch (Escucha continuamente y si detecta cambios avisa al administrador)
   - ArpDefender
@@ -66,24 +75,41 @@ Es un protocolo de la capa de enlace de datos y se encarga de encontrar la direc
 - Configurar DAI (Dynamic ARP Inspection [OPCIÓN MAS USADA])
   - Con o sin DHCP Snooping
 
-## Protocolo STP
+## Protocolo STP (Spanning Tree Protocol)
 
-- Es un protoclo de la capa enlace de datos y gestiona la presencia de bucles (_Broadcast storm_) en la topologia de red debido a enlaces redundantes
+STP monitorea continuamente la red para detectar cambios en su topología. Si un enlace falla o se introduce uno nuevo, el protocolo reconfigura automáticamente los caminos activos para evitar bucles mientras mantiene conectividad. El protocolo también selecciona un **Root Bridge**, que actúa como el "**referente central**" en la red para calcular los caminos. El Root Bridge se elige con base en: **Bridge ID (BID)**, una combinación de prioridad configurada (valor predeterminado 32768) y la dirección MAC del switch. **El switch con el BID más bajo se convierte en el Root Bridge.**
+
+El protocolo de árbol de expansión (STP, por sus siglas en inglés) es un protocolo de la capa de enlace de datos que evita la formación de bucles en redes con enlaces redundantes. Los bucles pueden causar múltiples problemas, siendo la _tormenta de broadcast_ uno de los más comunes. Este fenómeno ocurre cuando un mensaje de broadcast queda atrapado en un ciclo infinito, consumiendo el ancho de banda y afectando el rendimiento de la red. **Los bucles también generan inestabilidad en las tablas MAC** de los switches, ya que estos reciben el mismo paquete desde diferentes puertos y actualizan constantemente el campo `source` (**origen MAC del mensaje**), lo que provoca confusión sobre el puerto asociado a una dirección MAC en particular. Estos problemas suelen originarse cuando no se implementa un mecanismo para gestionar adecuadamente la redundancia en la red.
+>**STP** soluciona estos inconvenientes al identificar los enlaces redundantes y **bloquearlos dinámicamente**, dejando un único camino activo para evitar bucles, pero manteniendo la redundancia para garantizar la recuperación ante fallos. en la topologia de red debido a enlaces redundantes.
+
 - Los swithces se activan o desactivan automáticamente segúun las necesidades topológicas
 - Para elminar los bucles se determina un root en funcion de prioridad y 3 tipos de puerto:
-  - root
-  - designado
-  - alternativo
-- Se utilizan tramas BDPU
+  - **root**
+    - Es el puerto que tiene el **camino más corto** (menor costo) hacia el Root Bridge.
+    - Solo un puerto por switch puede ser el Root Port.
+  - **designado**
+    - Es el puerto que tiene el **camino más eficiente** hacia una red específica.
+    - Está activo para reenviar tráfico.
+  - **alternativo**
+    - Puerto en estado bloqueado para evitar bucles.
+    - Se activa automáticamente **si falla el enlace activo**.
+  
+  - Se utilizan tramas **BDPU** (mensajes intercambiados entre switches para compartir información sobre la topología de la red.)
+    - Incluyen detalles como el BID, los costos de los caminos y la información del Root Bridge.
+    - Los switches analizan estas tramas para determinar su rol y el estado de sus puertos.
 
 ### Temporizadores entre escucha y aprendizaje
 
-- Hello Timer
+- **Hello Timer**
   - valor predeterminado (2 segundos)
-- Forward Delay Timer
+    - Frecuencia con la que el Root Bridge envía tramas BPDU para anunciar su presencia y detectar cambios en la topología.
+- **Forward Delay Timer**
   - valor predeterminado (15 segundos)
-- Max Age Timer
+    - Tiempo que un puerto permanece en los estados de escucha (Listening) y aprendizaje (Learning) antes de entrar en el estado reenviando (Forwarding).
+    - Este retraso evita bucles al permitir que la red se estabilice antes de comenzar a reenviar tráfico.
+- **Max Age Timer**
   - valor predeterminado (20 segundos)
+    - Tiempo que un switch espera sin recibir BPDUs antes de asumir que hay un cambio en la topología y reiniciar el proceso de cálculo de caminos.
 
 ### Estados del puerto
 
@@ -114,10 +140,12 @@ Es un protocolo de la capa de enlace de datos y se encarga de encontrar la direc
 - **Usar Portfast BDPUGuard** (Es una configuracion que se establece con lols enlaces que conectan a los usuarios finales y asegura que los puertos pasan a estado de reenvio sin quedarse escuchando ni aprendiendo) [Se asume que no va a haber un switch conectado por lo que no va a formar parte del arbol de expansion]
 - **Usar Root Guard**
 
-## Protocolo CDP
+## Protocolo CDP (Cisco Discovery Protocol)
 
-- Protocolo patentado por Cisco, de capa 2 (Solo se usa en dispositivos cisco que comparten enlace de datos)
-- Envía mensajes multicast periódicos a los disps conectados
+Su propósito principal es permitir que los dispositivos de Cisco (como switches, routers y otros equipos de red) intercambien información sobre sí mismos, facilitando el descubrimiento de vecinos y la administración de la red.
+
+- Es un protocolo patentado por Cisco, de capa 2 (Solo se usa en dispositivos cisco que comparten enlace de datos)
+- Envía mensajes multicast periódicos a los disps conectados (_vecinos_)
 - Info de los paquetes: nombre de dispositivo, imagen del OS, tipo y modelo, direccion IP, Vlan nativa...
 
 ### Fallo de seguridad
