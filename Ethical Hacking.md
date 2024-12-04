@@ -1,4 +1,4 @@
-# Fundamentos en el Hacking Ético
+# Ethical Hacking
 
 ## ¿Qué entendemos por seguridad digital?
 
@@ -20,29 +20,29 @@ Nmap (Network Mapper) es una herramienta de código abierto para exploración de
 ### ¿Qué es Nmap?
 - Identificación rápida de dispositivos activos en la red.
 - Comandos básicos para escanear rangos de IP:
-  - `nmap -sP 192.168.0.1/24`
-  - `nmap 192.168.0.*`
+  - nmap -sP 192.168.0.1/24
+  - nmap 192.168.0.*
 
 ## Usos de Nmap
 
 ### Detección de Servicios y Aplicaciones
 - Detección de servicios y aplicaciones que se ejecutan en los puertos abiertos.
 - Escaneo de **todos** los puertos:
-  - `nmap -sV [IP o dominio]`
-  - `nmap -p80,443,8080 [IP o dominio]`
-  - `nmap -p- -sV [IP o dominio]`
+  - nmap -sV [IP o dominio]
+  - nmap -p80,443,8080 [IP o dominio]
+  - nmap -p- -sV [IP o dominio]
 
 ### Identificación del Sistema Operativo
 - Mediante los servicios detectados, puedes hacerte una idea del sistema operativo, si este no es exfiltrado en el proceso de reconocimiento de versiones de servicios. Sin embargo, podemos valernos de:
-  - `nmap -O [IP o dominio]` (Este comando requiere permisos administrativos).
+  - nmap -O [IP o dominio] (Este comando requiere permisos administrativos).
 
 ### Escaneo de Puertos UDP
 - Escaneo de puertos UDP:
-  - `nmap -sU [IP o dominio]`
+  - nmap -sU [IP o dominio]
 
 ### Escaneo Rápido
 - Para un escaneo rápido:
-  - `nmap -F [IP o dominio]`
+  - nmap -F [IP o dominio]
 
 ### Formatos de Salida en Nmap
 - Podemos controlar la salida de Nmap a ficheros distintos. Los formatos de salida de Nmap son:
@@ -50,14 +50,14 @@ Nmap (Network Mapper) es una herramienta de código abierto para exploración de
   - Grep output
   - XML
 - Comando para salida:
-  - `nmap <ip> -oA output_filename`
+  - nmap <ip> -oA output_filename
 
 ## Más en Nmap
 
 ### Nmap Scripting Engine (NSE)
 - Nmap incluye scripts que automatizan ciertas detecciones o ataques contra servicios. Estos usan el Nmap Scripting Engine (NSE), basado en el lenguaje LUA:
-  - `nmap --script vuln [IP o dominio]`
-  - `nmap --script firewall-bypass [IP o dominio]`
+  - nmap --script vuln [IP o dominio]
+  - nmap --script firewall-bypass [IP o dominio]
 
 ### Precauciones y Consideraciones Éticas
 - El escaneo de redes ha implicado un debate sobre su legitimidad y responsabilidad de uso. Siempre obtener permiso antes de escanear redes que no te pertenezcan.
@@ -79,7 +79,7 @@ Un exploit es un fragmento de software, un conjunto de datos o una secuencia de 
 Un CVE (Common Vulnerabilities and Exposures) es un identificador estándar para una vulnerabilidad de seguridad conocida. El sistema CVE proporciona una referencia de seguridad pública para cada vulnerabilidad conocida.
 
 El formato para las entradas CVE es:
-- `CVE-YYYY-NNNN`  
+- CVE-YYYY-NNNN
   (YYYY indica el año y NNNN el número de vulnerabilidad)
 - Desde enero de 2014, este identificador puede contener, si es necesario, más de cuatro dígitos.
 
@@ -94,15 +94,15 @@ El formato para las entradas CVE es:
 ### Fuentes Públicas
 - **cvedetails.com**
 - **EXPLOIT-DB** (API - searchsploit)
-  - Ejemplo: `searchsploit apache 2.4`
+  - Ejemplo: searchsploit apache 2.4
 
 ### Análisis de Explotaciones
 - **Sploitus:**
   - Ejemplo de uso: Navegar a sploitus.com y buscar por la tecnología o el tipo de vulnerabilidad. Ej. "remote code execution"
-  
+
 - **Acceso a CVE Database:**
   - Ejemplo de uso: Navegar a cvedetails.com y buscar información detallada de CVEs específicos, tecnologías asociadas, incluso pruebas de concepto públicas.
-  
+
   El almacenaje de exploits y CVEs es crucial para la comprensión de los mismos y la mejora en cuanto a seguridad informática. Herramientas y recursos proporcionados son esenciales para mantenerse informado y protegido.
 
 
@@ -225,7 +225,7 @@ El hacking web implica la explotación de vulnerabilidades en aplicaciones web c
 - Utilice el escáner para realizar un análisis inicial y determinar puntos débiles.
 - Explore vulnerabilidades específicas con Intruder y Repeater para entender su alcance y potencial impacto.
 
-## Prueba de Concepto
+## Prueba de Concepto con BurpSuite
 
 
 ![alt text](1.png)
@@ -234,11 +234,106 @@ El hacking web implica la explotación de vulnerabilidades en aplicaciones web c
 ![alt text](4.png)
 ![alt text](5.png)
 
+> **Sobre BurpSuite** es interesante resaltar el _scope_. Si nos vamos a HTTPS history y veremos mucho ruido de peticiones, pero si nos centramos en el dominio o dominios que nos interesan y los scopeamos (CDR >> add to scope) y luego en _Intercept_ filtramos show only in-scope items nos mostrará solo lo que nos interesa
+
+Al interceptar una solicitud, en el caso de la prueba de concepto, estamos observando una petición POST que es para cambiar la clave. En el cuerpo de la Request podremos hacer CDR y enviarla al **Repeater** (Tambien con ctrl + R)
+
+![alt text](<Captura de pantalla (485).png>)
+
+para enviar la petición modificada en algun encabezado para probar distintas interacciones en la API
+
+![alt text](<Captura de pantalla (486).png>)
+
+# ARPSpoofing básico. Ataque MITM en LAN
+
+## Componentes de una Red Local (LAN)
+- **Dispositivos de Red**: Incluyen switches, routers, puntos de acceso, que facilitan la comunicación entre dispositivos en la red.
+- **Medios de Transmisión**: Cables (como Ethernet) o inalámbricos (como WiFi) que conectan los dispositivos.
+- **Direcciones IP y MAC**: Identificadores únicos para dispositivos en la red; IP para la capa de red y MAC para la capa de enlace de datos.
+
+## Prácticas de Seguridad en Enrutamiento y Switching
+### ACL (Listas de Control de Acceso)
+- Las ACL se utilizan para permitir o denegar tráficos específicos basados en direcciones IP, puertos o protocolos.
+- Implementadas en routers y switches para controlar el acceso y limitar la propagación de ataques.
+
+### Seguridad de Capa 2
+- Técnicas como el **Dynamic ARP Inspection (DAI)** y **DHCP Snooping** aseguran la autenticidad y seguridad de los mensajes ARP y las asignaciones DHCP dentro de la LAN, protegiendo contra ataques como **ARP Spoofing** y **Rogue DHCP Servers**.
+
+### Hardening de Dispositivos
+- La configuración segura de routers y switches es crucial.
+  - Cambiar contraseñas predeterminadas.
+  - Deshabilitar servicios innecesarios.
+  - Actualizar firmware y software a las versiones más seguras.
+  - Monitorear los dispositivos para detectar actividades sospechosas.
+
+## Vulnerabilidades en Redes LAN
+- **Accesos no Autorizados**: Ingreso a la red por usuarios no autorizados.
+- **Ataques Internos**: Ataques originados dentro de la propia red.
+- **Sniffing**: Captura pasiva de tráfico en la red para obtener información sensible (MITM).
+
+## Mecanismos de Defensa
+### Autenticación y Control de Acceso
+- Restricciones de acceso a la red a través de autenticación para garantizar que solo dispositivos autorizados puedan acceder.
+
+### Cifrado
+- Uso de tecnologías como **VPNs** para cifrar el tráfico de datos y proteger la información en tránsito.
+
+### Segmentación de Red
+- Dividir la red en subredes para limitar el acceso y minimizar los riesgos.
+
+---
+
+# Ataques MITM (Man-in-the-Middle)
+
+![alt text](<Captura de pantalla (487).png>)
+
+## Definición
+- Los ataques de **Man-in-the-Middle (MITM)** son técnicas utilizadas por los atacantes para intervenir en la comunicación entre dos entidades sin que ellas lo sepan.
+- Los objetivos de estos ataques pueden variar desde la intercepción de datos hasta la alteración o el bloqueo de la comunicación.
+
+## Interceptar Tráfico
+### Pasiva
+- El atacante escucha el tráfico entre las partes sin alterar los datos.
+- Ejemplo: sniffing de paquetes en redes no seguras, como WiFi público.
+
+### Activa
+- El atacante inserta un intermediario entre las dos partes para capturar y potencialmente alterar la comunicación, aunque inicialmente solo puede estar escuchando los datos.
+
+#### Herramientas
+
+- **WireShark**: Herramienta de analisis de red para capturar paquetes de datos a tiempo real
+- **Sniffers** de red de terceros o propio (exsiten librerias para tal fin): Captura tráfico de red en interfaces donde este pasa con cidrado debil o sin cifrar
+- **MITMProxy**: navega a traves de un servicio. Permite interpectar HTTP y HTTPS
+
+---
+
+# Pruena de concepto (Maquinas Windows y Kali)
 
 
+1. Crea maquina W
+2. Comprueba el direccionamiento ARP en W arp -a o /a??
+3. Abre ettercap con Kali
+   1. scanea host
+   2. selecciona el objetivo
+   3. inicia el sniffing
+4. Abre paralelamente Wireshark y captura solo trafico DNS
+5. Observa que pasa al realizar un ping a una pagina desde la maquina W en el wireshark de Kali
 
 
-# DUDAS Y TO DOs
+# Ataques RCE (Remote Code Execution) y algunas metodologías
 
-- Windows y Linux Internals
-- Pruebas de concepto 
+RCE se refiere a la capacidad de ejecutar código en un sistema remoto, es decir, en un servidor o una máquina víctima, desde una máquina atacante. Esto permite al atacante ejecutar comandos en la máquina víctima, lo que puede ser utilizado para extraer información, tomar control del sistema, o realizar acciones malintencionadas.
+
+## **Reverse Shells y Acceso Remoto**
+
+En el ámbito de la **seguridad ofensiva** y el **hacking ético**, obtener acceso remoto a un sistema comprometido es crucial para realizar análisis y pruebas de penetración. Existen varias técnicas que permiten establecer este acceso, entre las cuales destacan **Reverse Shells**, **Bind Shells** y **Webshells**. A continuación, se profundiza en cada una de ellas.
+
+## **1. Reverse Shell**
+
+Una **Reverse Shell** es un tipo de shell donde el **sistema comprometido** (cliente) establece la conexión hacia el **atacante** (servidor). Este método es útil cuando el objetivo está detrás de un firewall o en una red interna que no permite conexiones entrantes.
+
+### **Características clave:**
+- El sistema objetivo se conecta a un puerto específico en el servidor atacante.
+- Evita bloqueos de firewall o NAT que podrían prevenir conexiones entrantes.
+- El atacante puede ejecutar comandos de manera remota en el sistema comprometido.
+
