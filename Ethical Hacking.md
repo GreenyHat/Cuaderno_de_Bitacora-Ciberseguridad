@@ -227,22 +227,20 @@ El hacking web implica la explotación de vulnerabilidades en aplicaciones web c
 
 ## Prueba de Concepto con BurpSuite
 
-
-![alt text](1.png)
-![alt text](2.png)
-![alt text](3.png)
-![alt text](4.png)
-![alt text](5.png)
+![alt text](/Hacking/1.png)
+![alt text](/Hacking/2.png)
+![alt text](/Hacking/3.png)
+![alt text](/Hacking/4.png)
+![alt text](/Hacking/5.png)
 
 > **Sobre BurpSuite** es interesante resaltar el _scope_. Si nos vamos a HTTPS history y veremos mucho ruido de peticiones, pero si nos centramos en el dominio o dominios que nos interesan y los scopeamos (CDR >> add to scope) y luego en _Intercept_ filtramos show only in-scope items nos mostrará solo lo que nos interesa
 
 Al interceptar una solicitud, en el caso de la prueba de concepto, estamos observando una petición POST que es para cambiar la clave. En el cuerpo de la Request podremos hacer CDR y enviarla al **Repeater** (Tambien con ctrl + R)
 
-![alt text](<Captura de pantalla (485).png>)
-
+![alt text](<Hacking/Captura de pantalla (485).png>)
 para enviar la petición modificada en algun encabezado para probar distintas interacciones en la API
 
-![alt text](<Captura de pantalla (486).png>)
+![alt text](<Hacking/Captura de pantalla (486).png>)
 
 # ARPSpoofing básico. Ataque MITM en LAN
 
@@ -285,7 +283,7 @@ para enviar la petición modificada en algun encabezado para probar distintas in
 
 # Ataques MITM (Man-in-the-Middle)
 
-![alt text](<Captura de pantalla (487).png>)
+![alt text](<Hacking/Captura de pantalla (487).png>)
 
 ## Definición
 - Los ataques de **Man-in-the-Middle (MITM)** son técnicas utilizadas por los atacantes para intervenir en la comunicación entre dos entidades sin que ellas lo sepan.
