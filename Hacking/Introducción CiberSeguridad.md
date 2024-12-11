@@ -23,10 +23,11 @@
 
 El RMIAS también incluye el IAS-octave, un conjunto de ocho metas de seguridad que reemplazan la tríada CIA (Confidencialidad, Integridad y Disponibilidad). El IAS-octave se basa en una extensa análisis de la literatura sobre seguridad de la información y sistemas de ingeniería, y fue evaluado a través de entrevistas con expertos en seguridad. Puede ser utilizado para:
 
-Desarrollar documentos de política de seguridad de la información
-Structurar el pensamiento en seguridad de la información en una organización
-Catalogar la investigación existente en el dominio
-Ayudar a los nuevos entrantes en el dominio de la seguridad de la información a comprender la complejidad y diversidad del mismo
+- Desarrollar documentos de política de seguridad de la información
+- Estructurar el pensamiento en seguridad de la información en una organización
+- Catalogar la investigación existente en el dominio
+- Ayudar a los nuevos entrantes en el dominio de la seguridad de la información a comprender la complejidad y diversidad del mismo
+
 El RMIAS se publica bajo una licencia Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International.
 
 ### Ventajas
