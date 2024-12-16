@@ -9,6 +9,15 @@ La seguridad digital se refiere a la protección de sistemas, redes y datos fren
 - Técnicas de detección de activos vulnerables y explotación de las vulnerabilidades asociadas a ellos.
 - Existen explotaciones públicas que el agente de seguridad ofensiva puede emplear.
 
+### Metodología DRIEPE
+
+- Definición de alcance del test de seguridad (con el cliente)
+- Recopilar información (recopilación pasiva, semi-pasiva y activa de información)
+- Identificar y analizar vulnerabilidades
+- Explotación de las vulnerabilidades (en host, en app webs y en redes)
+- Post-explotación
+- Elaboración del documento de reporte
+
 # Escaneo de Redes (Nmap)
 
 ## Activos y Servicios
